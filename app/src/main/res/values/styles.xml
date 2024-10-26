@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomNavigationTextAppearance" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">18sp</item> <!-- Thay 18sp bằng kích thước mong muốn -->
+        <item name="android:textColor">@color/white</item> <!-- Thay màu sắc mong muốn -->
+    </style>
+</resources>
