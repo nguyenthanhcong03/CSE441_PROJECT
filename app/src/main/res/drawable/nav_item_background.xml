@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Nền và viền khi item được chọn -->
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <!-- Màu nền của item khi được chọn -->
+            <solid android:color="@color/selected_color" />
+            <!-- Border trái -->
+            <stroke android:width="4dp" android:color="#BBBEBF" />
+        </shape>
+    </item>
+    <!-- Nền khi item không được chọn -->
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <!-- Màu nền mặc định khi không chọn -->
+            <solid android:color="@color/unselected_color" />
+        </shape>
+    </item>
+</selector>
