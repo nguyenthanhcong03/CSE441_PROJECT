@@ -38,24 +38,24 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int FRAGMENT_HOME = 0;
-    private static final int FRAGMENT_BOOK = 1;
-    private static final int FRAGMENT_CATEGORY = 2;
-    private static final int FRAGMENT_STUDENT = 3;
-    private static final int FRAGMENT_AUTHOR = 4;
-    private static final int FRAGMENT_PUBLISHER = 5;
-    private static final int FRAGMENT_STATISTIC = 6;
-    private static final int FRAGMENT_RULE = 7;
-    private static final int FRAGMENT_ACCOUNT = 8;
+    public static final int FRAGMENT_HOME = 0;
+    public static final int FRAGMENT_BOOK = 1;
+    public static final int FRAGMENT_CATEGORY = 2;
+    public static final int FRAGMENT_STUDENT = 3;
+    public static final int FRAGMENT_AUTHOR = 4;
+    public static final int FRAGMENT_PUBLISHER = 5;
+    public static final int FRAGMENT_STATISTIC = 6;
+    public static final int FRAGMENT_RULE = 7;
+    public static final int FRAGMENT_ACCOUNT = 8;
 
-    private int currentFragment = FRAGMENT_HOME;
+    public int currentFragment = FRAGMENT_HOME;
 
-    private int itemId = R.id.nav_home; // ID mặc định, có thể đặt lại sau
+    public int itemId = R.id.nav_home; // ID mặc định, có thể đặt lại sau
 
     DrawerLayout drawerLayout;
     ImageButton btnDrawerToggle, btnManageAccount;
-    NavigationView navigationView;
-    TextView toolbarTitle;
+    public NavigationView navigationView;
+    public TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setCheckedItem(R.id.nav_home);
 
         // Hiển thị HomeFragment khi ứng dụng được khởi động
-        replacFragment(new HomeFragment());
+        replaceFragment(new HomeFragment());
         currentFragment = FRAGMENT_HOME; // Cập nhật fragment hiện tại
 
         // Mở thanh menu trượt
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     // Bỏ chọn trạng thái checked cho item trong Navigation Drawer
                     navigationView.getMenu().findItem(itemId).setChecked(false); // Bỏ chọn item hiện tại
                     toolbarTitle.setText("Thông tin cá nhân");
-                    replacFragment(new AccountFragment());
+                    replaceFragment(new AccountFragment());
                     currentFragment = FRAGMENT_ACCOUNT;
                 }
             }
@@ -109,49 +109,49 @@ public class MainActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_home) {
                     if (currentFragment != FRAGMENT_HOME) {
                         toolbarTitle.setText("AZ-Library");
-                        replacFragment(new HomeFragment());
+                        replaceFragment(new HomeFragment());
                         currentFragment = FRAGMENT_HOME;
                     }
                 } else if (itemId == R.id.nav_manage_book) {
                     if (currentFragment != FRAGMENT_BOOK) {
                         toolbarTitle.setText("Quản lý sách");
-                        replacFragment(new BookFragment());
+                        replaceFragment(new BookFragment());
                         currentFragment = FRAGMENT_BOOK;
                     }
                 } else if (itemId == R.id.nav_manage_category) {
                     if (currentFragment != FRAGMENT_CATEGORY) {
                         toolbarTitle.setText("Quản lý danh mục");
-                        replacFragment(new CategoryFragment());
+                        replaceFragment(new CategoryFragment());
                         currentFragment = FRAGMENT_CATEGORY;
                     }
                 } else if (itemId == R.id.nav_manage_student) {
                     if (currentFragment != FRAGMENT_STUDENT) {
                         toolbarTitle.setText("Quản lý sinh viên");
-                        replacFragment(new StudentFragment());
+                        replaceFragment(new StudentFragment());
                         currentFragment = FRAGMENT_STUDENT;
                     }
                 } else if (itemId == R.id.nav_manage_author) {
                     if (currentFragment != FRAGMENT_AUTHOR) {
                         toolbarTitle.setText("Quản lý tác giả");
-                        replacFragment(new AuthorFragment());
+                        replaceFragment(new AuthorFragment());
                         currentFragment = FRAGMENT_AUTHOR;
                     }
                 } else if (itemId == R.id.nav_manage_publisher) {
                     if (currentFragment != FRAGMENT_PUBLISHER) {
                         toolbarTitle.setText("Quản lý nhà xuất bản");
-                        replacFragment(new PublisherFragment());
+                        replaceFragment(new PublisherFragment());
                         currentFragment = FRAGMENT_PUBLISHER;
                     }
                 } else if (itemId == R.id.nav_statistic) {
                     if (currentFragment != FRAGMENT_STATISTIC) {
                         toolbarTitle.setText("Thống kê");
-                        replacFragment(new StatisticFragment());
+                        replaceFragment(new StatisticFragment());
                         currentFragment = FRAGMENT_STATISTIC;
                     }
                 } else if (itemId == R.id.nav_manage_rule) {
                     if (currentFragment != FRAGMENT_RULE) {
                         toolbarTitle.setText("Quy định");
-                        replacFragment(new RuleFragment());
+                        replaceFragment(new RuleFragment());
                         currentFragment = FRAGMENT_RULE;
                     }
                 }
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
             if (currentFragment != FRAGMENT_HOME) {
                 // Trở về HomeFragment
                 toolbarTitle.setText("AZ-Library");
-                replacFragment(new HomeFragment());
+                replaceFragment(new HomeFragment());
                 currentFragment = FRAGMENT_HOME; // Cập nhật fragment hiện tại
                 // Đặt trạng thái checked cho item mặc định
                 navigationView.setCheckedItem(R.id.nav_home);
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Hàm thay thế fragment
-    private void replacFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, fragment);
         transaction.commit();
