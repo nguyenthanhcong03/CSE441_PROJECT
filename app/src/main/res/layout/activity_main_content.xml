@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_menu" />
+            android:src="@drawable/ic_white_menu" />
 
         <TextView
             android:id="@+id/toolbar_title"
@@ -30,13 +30,13 @@
             android:textSize="20sp" />
 
         <ImageButton
-            android:id="@+id/btnAccount"
+            android:id="@+id/btnManageAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_user" />
+            android:src="@drawable/ic_white_user" />
     </Toolbar>
 
     <!--        Frame Content    -->

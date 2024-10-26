@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private int itemId = R.id.nav_home; // ID mặc định, có thể đặt lại sau
 
     DrawerLayout drawerLayout;
-    ImageButton btnDrawerToggle, btnAccount;
+    ImageButton btnDrawerToggle, btnManageAccount;
     NavigationView navigationView;
     TextView toolbarTitle;
 
@@ -67,10 +67,14 @@ public class MainActivity extends AppCompatActivity {
         btnDrawerToggle = findViewById(R.id.btnDrawerToggle);
         navigationView = findViewById(R.id.navigation_view);
         toolbarTitle = findViewById(R.id.toolbar_title);
-        btnAccount = findViewById(R.id.btnAccount);
+        btnManageAccount = findViewById(R.id.btnManageAccount);
 
         // Đặt trạng thái checked cho item mặc định
         navigationView.setCheckedItem(R.id.nav_home);
+
+        // Hiển thị HomeFragment khi ứng dụng được khởi động
+        replacFragment(new HomeFragment());
+        currentFragment = FRAGMENT_HOME; // Cập nhật fragment hiện tại
 
         // Mở thanh menu trượt
         btnDrawerToggle.setOnClickListener(new View.OnClickListener() {
@@ -81,13 +85,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Mở fragment thông tin cá nhân
-        btnAccount.setOnClickListener(new View.OnClickListener() {
+        btnManageAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Bỏ chọn trạng thái checked cho item trong Navigation Drawer
-                navigationView.getMenu().findItem(itemId).setChecked(false); // Bỏ chọn item hiện tại
 
                 if (currentFragment != FRAGMENT_ACCOUNT) {
+                    // Bỏ chọn trạng thái checked cho item trong Navigation Drawer
+                    navigationView.getMenu().findItem(itemId).setChecked(false); // Bỏ chọn item hiện tại
                     toolbarTitle.setText("Thông tin cá nhân");
                     replacFragment(new AccountFragment());
                     currentFragment = FRAGMENT_ACCOUNT;
@@ -173,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
                 toolbarTitle.setText("AZ-Library");
                 replacFragment(new HomeFragment());
                 currentFragment = FRAGMENT_HOME; // Cập nhật fragment hiện tại
+                // Đặt trạng thái checked cho item mặc định
+                navigationView.setCheckedItem(R.id.nav_home);
             } else {
                 // Nếu đang ở HomeFragment, thực hiện hành động mặc định
                 super.onBackPressed();
