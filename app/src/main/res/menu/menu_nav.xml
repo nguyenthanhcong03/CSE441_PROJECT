@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/nav_home" />
+        <item
+            android:id="@+id/nav_manage_book"
+            android:icon="@drawable/ic_book"
+            android:title="@string/nav_manage_book" />
+        <item
+            android:id="@+id/nav_manage_category"
+            android:icon="@drawable/ic_category"
+            android:title="@string/nav_manage_category" />
+        <item
+            android:id="@+id/nav_manage_student"
+            android:icon="@drawable/ic_student"
+            android:title="@string/nav_manage_student" />
+        <item
+            android:id="@+id/nav_manage_author"
+            android:icon="@drawable/ic_author"
+            android:title="@string/nav_manage_author" />
+        <item
+            android:id="@+id/nav_manage_publisher"
+            android:icon="@drawable/ic_publisher"
+            android:title="@string/nav_manage_publisher" />
+        <item
+            android:id="@+id/nav_statistic"
+            android:icon="@drawable/ic_statistic"
+            android:title="@string/nav_statistic" />
+        <item
+            android:id="@+id/nav_manage_rule"
+            android:icon="@drawable/ic_rule"
+            android:title="@string/nav_manage_rule" />
+    </group>
+</menu>

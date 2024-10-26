@@ -1,24 +1,191 @@
 package com.example.cse441_project;
 
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+
+import com.example.cse441_project.fragment.AccountFragment;
+import com.example.cse441_project.fragment.HomeFragment;
+import com.example.cse441_project.fragment.BookFragment;
+import com.example.cse441_project.fragment.CategoryFragment;
+import com.example.cse441_project.fragment.StudentFragment;
+import com.example.cse441_project.fragment.AuthorFragment;
+import com.example.cse441_project.fragment.PublisherFragment;
+import com.example.cse441_project.fragment.StatisticFragment;
+import com.example.cse441_project.fragment.RuleFragment;
+import com.google.android.material.navigation.NavigationView;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int FRAGMENT_HOME = 0;
+    private static final int FRAGMENT_BOOK = 1;
+    private static final int FRAGMENT_CATEGORY = 2;
+    private static final int FRAGMENT_STUDENT = 3;
+    private static final int FRAGMENT_AUTHOR = 4;
+    private static final int FRAGMENT_PUBLISHER = 5;
+    private static final int FRAGMENT_STATISTIC = 6;
+    private static final int FRAGMENT_RULE = 7;
+    private static final int FRAGMENT_ACCOUNT = 8;
+
+    private int currentFragment = FRAGMENT_HOME;
+
+    private int itemId = R.id.nav_home; // ID mặc định, có thể đặt lại sau
+
+    DrawerLayout drawerLayout;
+    ImageButton btnDrawerToggle, btnAccount;
+    NavigationView navigationView;
+    TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        btnDrawerToggle = findViewById(R.id.btnDrawerToggle);
+        navigationView = findViewById(R.id.navigation_view);
+        toolbarTitle = findViewById(R.id.toolbar_title);
+        btnAccount = findViewById(R.id.btnAccount);
+
+        // Đặt trạng thái checked cho item mặc định
+        navigationView.setCheckedItem(R.id.nav_home);
+
+        // Mở thanh menu trượt
+        btnDrawerToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.open();
+            }
+        });
+
+        // Mở fragment thông tin cá nhân
+        btnAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Bỏ chọn trạng thái checked cho item trong Navigation Drawer
+                navigationView.getMenu().findItem(itemId).setChecked(false); // Bỏ chọn item hiện tại
+
+                if (currentFragment != FRAGMENT_ACCOUNT) {
+                    toolbarTitle.setText("Thông tin cá nhân");
+                    replacFragment(new AccountFragment());
+                    currentFragment = FRAGMENT_ACCOUNT;
+                }
+            }
+        });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                itemId = item.getItemId(); // Lưu ID item được chọn
+                item.setChecked(true); // Đặt trạng thái checked
+
+                // Khi chọn các nav_item thì sẽ được thay thế bằng các fragment tương ứng
+                if (itemId == R.id.nav_home) {
+                    if (currentFragment != FRAGMENT_HOME) {
+                        toolbarTitle.setText("AZ-Library");
+                        replacFragment(new HomeFragment());
+                        currentFragment = FRAGMENT_HOME;
+                    }
+                } else if (itemId == R.id.nav_manage_book) {
+                    if (currentFragment != FRAGMENT_BOOK) {
+                        toolbarTitle.setText("Quản lý sách");
+                        replacFragment(new BookFragment());
+                        currentFragment = FRAGMENT_BOOK;
+                    }
+                } else if (itemId == R.id.nav_manage_category) {
+                    if (currentFragment != FRAGMENT_CATEGORY) {
+                        toolbarTitle.setText("Quản lý danh mục");
+                        replacFragment(new CategoryFragment());
+                        currentFragment = FRAGMENT_CATEGORY;
+                    }
+                } else if (itemId == R.id.nav_manage_student) {
+                    if (currentFragment != FRAGMENT_STUDENT) {
+                        toolbarTitle.setText("Quản lý sinh viên");
+                        replacFragment(new StudentFragment());
+                        currentFragment = FRAGMENT_STUDENT;
+                    }
+                } else if (itemId == R.id.nav_manage_author) {
+                    if (currentFragment != FRAGMENT_AUTHOR) {
+                        toolbarTitle.setText("Quản lý tác giả");
+                        replacFragment(new AuthorFragment());
+                        currentFragment = FRAGMENT_AUTHOR;
+                    }
+                } else if (itemId == R.id.nav_manage_publisher) {
+                    if (currentFragment != FRAGMENT_PUBLISHER) {
+                        toolbarTitle.setText("Quản lý nhà xuất bản");
+                        replacFragment(new PublisherFragment());
+                        currentFragment = FRAGMENT_PUBLISHER;
+                    }
+                } else if (itemId == R.id.nav_statistic) {
+                    if (currentFragment != FRAGMENT_STATISTIC) {
+                        toolbarTitle.setText("Thống kê");
+                        replacFragment(new StatisticFragment());
+                        currentFragment = FRAGMENT_STATISTIC;
+                    }
+                } else if (itemId == R.id.nav_manage_rule) {
+                    if (currentFragment != FRAGMENT_RULE) {
+                        toolbarTitle.setText("Quy định");
+                        replacFragment(new RuleFragment());
+                        currentFragment = FRAGMENT_RULE;
+                    }
+                }
+
+                navigationView.setCheckedItem(itemId); // Đặt lại trạng thái checked cho item đã chọn
+                drawerLayout.close();
+                return false;
+            }
+
+
         });
     }
+
+    // Sự kiện khi nhấn nút back
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            // Kiểm tra xem fragment hiện tại có phải là HomeFragment không
+            if (currentFragment != FRAGMENT_HOME) {
+                // Trở về HomeFragment
+                toolbarTitle.setText("AZ-Library");
+                replacFragment(new HomeFragment());
+                currentFragment = FRAGMENT_HOME; // Cập nhật fragment hiện tại
+            } else {
+                // Nếu đang ở HomeFragment, thực hiện hành động mặc định
+                super.onBackPressed();
+            }
+        }
+    }
+
+    // Hàm thay thế fragment
+    private void replacFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.commit();
+    }
+
+
 }
