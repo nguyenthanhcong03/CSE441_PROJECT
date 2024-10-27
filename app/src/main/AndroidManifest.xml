@@ -13,16 +13,30 @@
         android:theme="@style/Theme.CSE441_PROJECT"
         tools:targetApi="31">
         <activity
+<<<<<<< HEAD
             android:name=".fragment.AddBookActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
+=======
+            android:name=".TestFireBase"
+            android:exported="true" >
+>>>>>>> main
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
     </application>
 
