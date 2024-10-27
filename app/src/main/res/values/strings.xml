@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">CSE441_PROJECT</string>
+    <string name="app_name">AZ-Library</string>
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_manage_book">Quản lý sách</string>
+    <string name="nav_manage_category">Quản lý danh mục</string>
+    <string name="nav_manage_student">Quản lý sinh viên</string>
+    <string name="nav_manage_author">Quản lý tác giả</string>
+    <string name="nav_manage_publisher">Quản lý nhà xuất bản</string>
+    <string name="nav_statistic">Thống kê</string>
+    <string name="nav_manage_rule">Quy định</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
