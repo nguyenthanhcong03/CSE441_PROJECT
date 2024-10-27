@@ -1,15 +1,16 @@
 package com.example.cse441_project.model;
-import java.util.List;
-
 import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Author {
+public class Log {
 
     private String id;
-    private String name;
-    List<Book> books;
+    private String userId;
+    private String action;
+    private String time;
+    private String description;
+
 }

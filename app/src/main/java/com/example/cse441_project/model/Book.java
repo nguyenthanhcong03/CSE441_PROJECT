@@ -1,4 +1,6 @@
 package com.example.cse441_project.model;
+import android.icu.text.UFormat;
+
 import java.util.List;
 
 import  lombok.*;
@@ -15,4 +17,7 @@ public class Book {
     private String image;
     private int quantity;
     private String publisherId;
+
+
+
 }

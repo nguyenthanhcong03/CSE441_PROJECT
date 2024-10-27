@@ -1,4 +1,5 @@
 package com.example.cse441_project.model;
+import java.util.Date;
 import java.util.List;
 
 import lombok.*;
@@ -15,9 +16,8 @@ public class User {
     private String fullname;
     private String address;
     private String gender;
-    private String birthday;
-    private boolean violent;
+    private Date birthday;
     private String role;
-    List<Book> books;
+
 
 }
