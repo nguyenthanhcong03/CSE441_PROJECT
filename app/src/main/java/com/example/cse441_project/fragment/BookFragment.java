@@ -39,12 +39,12 @@ public class BookFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_manage_book, container, false);
 
         Button btnAddBook = view.findViewById(R.id.btnAddBook);
-        db = FirebaseFirestore.getInstance();
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        bookList = new ArrayList<>();
-
-        fetchBooks();
+//        db = FirebaseFirestore.getInstance();
+//        recyclerView = view.findViewById(R.id.recyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        bookList = new ArrayList<>();
+//
+//        fetchBooks();
 
         btnAddBook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,23 +57,23 @@ public class BookFragment extends Fragment {
         return view;
     }
 
-    private void fetchBooks() {
-        db.collection("books")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Book book = document.toObject(Book.class);
-                                bookList.add(book);
-                            }
-                            bookAdapter = new BookAdapter(bookList);
-                            recyclerView.setAdapter(bookAdapter);
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-    }
+//    private void fetchBooks() {
+//        db.collection("books")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Book book = document.toObject(Book.class);
+//                                bookList.add(book);
+//                            }
+//                            bookAdapter = new BookAdapter(bookList);
+//                            recyclerView.setAdapter(bookAdapter);
+//                        } else {
+//                            Log.w(TAG, "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
+//    }
 }
