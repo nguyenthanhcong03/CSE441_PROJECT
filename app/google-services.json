@@ -1,33 +1,13 @@
 {
   "project_info": {
-    "project_number": "957565189652",
-    "firebase_url": "https://library-management-cb4ee-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "library-management-cb4ee",
-    "storage_bucket": "library-management-cb4ee.appspot.com"
+    "project_number": "432487074719",
+    "project_id": "librarymanagement-bfe28",
+    "storage_bucket": "librarymanagement-bfe28.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:957565189652:android:e6b614c46762d4fe4ff101",
-        "android_client_info": {
-          "package_name": "com.example.bai2"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAcQ6Z3mRPul_o6yihNzVtfPa4tSqogA2s"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:957565189652:android:08c3c21935deb9fb4ff101",
+        "mobilesdk_app_id": "1:432487074719:android:02eaa2d1cf123911cc4baa",
         "android_client_info": {
           "package_name": "com.example.cse441_project"
         }
@@ -35,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAcQ6Z3mRPul_o6yihNzVtfPa4tSqogA2s"
+          "current_key": "AIzaSyDF1IUZ-cjUjWSO-g5YLXNplv-Z5vmsv5M"
         }
       ],
       "services": {
