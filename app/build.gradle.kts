@@ -56,3 +56,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(kotlin("script-runtime"))
 }
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_quanly"
+    android:id="@+id/main"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#626D71">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="10dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/icon_back" />
+
+        <TextView
+            android:id="@+id/txtChangePassword"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="80dp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:text="Đổi mật khẩu" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="150dp"
+        android:paddingVertical="20dp"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/rounded_corners">
+
+        <TextView
+            android:id="@+id/txt37"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="60dp"
+            android:text="Mật khẩu hiện tại"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="60dp"
+            android:layout_gravity="center">
+
+            <EditText
+                android:id="@+id/edtPassword"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edittext"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:inputType="textPassword"
+                android:ems="10"/>
+
+            <ImageView
+                android:id="@+id/ivTogglePasswordVisibilityCurrent"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:paddingTop="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="69dp"
+                app:srcCompat="@drawable/icon_eye_hidden" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/textView38"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="60dp"
+            android:text="Mật khẩu mới"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="60dp"
+            android:layout_gravity="center">
+
+            <EditText
+                android:id="@+id/edtNewPass"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edittext"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:inputType="textPassword"
+                android:ems="10"/>
+
+            <ImageView
+                android:id="@+id/ivTogglePasswordVisibilityNew"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:paddingTop="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="69dp"
+                app:srcCompat="@drawable/icon_eye_show" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txt38"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="60dp"
+            android:text="Xác nhận mật khẩu mới "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="60dp"
+            android:layout_gravity="center">
+
+            <EditText
+                android:id="@+id/editTextText"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edittext"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:inputType="text"
+                android:ems="10"/>
+
+            <ImageView
+                android:id="@+id/ivTogglePasswordVisibilityConfirm"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:paddingTop="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="69dp"
+                app:srcCompat="@drawable/icon_eye_show" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#3D4446"
+            android:layout_gravity="center"
+            android:textSize="12dp"
+            android:text="Lưu" />
+
+    </LinearLayout>
+
+</LinearLayout>
