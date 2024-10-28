@@ -54,6 +54,7 @@ public class HomeFragment extends Fragment {
                         ((MainActivity) getActivity()).toolbarTitle.setText("Quản lý sách");
                         replaceFragment(new BookFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_BOOK;
+                        ((MainActivity) getActivity()).itemId = R.id.nav_manage_book; // Lưu ID item được chọn
                         ((MainActivity) getActivity()).navigationView.getMenu().findItem(((MainActivity) getActivity()).itemId).setChecked(true);
 
                     }
@@ -70,6 +71,7 @@ public class HomeFragment extends Fragment {
                         ((MainActivity) getActivity()).toolbarTitle.setText("Quản lý danh mục");
                         replaceFragment(new CategoryFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_CATEGORY;
+                        ((MainActivity) getActivity()).itemId = R.id.nav_manage_category; // Lưu ID item được chọn
                         ((MainActivity) getActivity()).navigationView.getMenu().findItem(((MainActivity) getActivity()).itemId).setChecked(true);
 
                     }
@@ -86,6 +88,7 @@ public class HomeFragment extends Fragment {
                         ((MainActivity) getActivity()).toolbarTitle.setText("Quản lý sinh viên");
                         replaceFragment(new StudentFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_STUDENT;
+                        ((MainActivity) getActivity()).itemId = R.id.nav_manage_student; // Lưu ID item được chọn
                         ((MainActivity) getActivity()).navigationView.getMenu().findItem(((MainActivity) getActivity()).itemId).setChecked(true);
 
                     }
@@ -102,6 +105,7 @@ public class HomeFragment extends Fragment {
                         ((MainActivity) getActivity()).toolbarTitle.setText("Quản lý tác giả");
                         replaceFragment(new AuthorFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_AUTHOR;
+                        ((MainActivity) getActivity()).itemId = R.id.nav_manage_author; // Lưu ID item được chọn
                         ((MainActivity) getActivity()).navigationView.getMenu().findItem(((MainActivity) getActivity()).itemId).setChecked(true);
 
                     }
@@ -118,6 +122,7 @@ public class HomeFragment extends Fragment {
                         ((MainActivity) getActivity()).toolbarTitle.setText("Quản lý nhà xuất bản");
                         replaceFragment(new PublisherFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_PUBLISHER;
+                        ((MainActivity) getActivity()).itemId = R.id.nav_manage_publisher; // Lưu ID item được chọn
                         ((MainActivity) getActivity()).navigationView.getMenu().findItem(((MainActivity) getActivity()).itemId).setChecked(true);
 
                     }
@@ -134,6 +139,7 @@ public class HomeFragment extends Fragment {
                         ((MainActivity) getActivity()).toolbarTitle.setText("Thống kê");
                         replaceFragment(new StatisticFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_STATISTIC;
+                        ((MainActivity) getActivity()).itemId = R.id.nav_statistic; // Lưu ID item được chọn
                         ((MainActivity) getActivity()).navigationView.getMenu().findItem(((MainActivity) getActivity()).itemId).setChecked(true);
 
                     }
@@ -150,6 +156,7 @@ public class HomeFragment extends Fragment {
                         ((MainActivity) getActivity()).toolbarTitle.setText("Quản lý quy định");
                         replaceFragment(new RuleFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_RULE;
+                        ((MainActivity) getActivity()).itemId = R.id.nav_manage_rule; // Lưu ID item được chọn
                         ((MainActivity) getActivity()).navigationView.getMenu().findItem(((MainActivity) getActivity()).itemId).setChecked(true);
 
                     }
