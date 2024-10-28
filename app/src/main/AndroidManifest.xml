@@ -13,10 +13,7 @@
         android:theme="@style/Theme.CSE441_PROJECT"
         tools:targetApi="31">
         <activity
-            android:name=".QuanLy.ThongTinCaNhan"
-            android:exported="false" />
-        <activity
-            android:name=".QuanLy.ThongTinTaiKhoan"
+            android:name=".fragment.EditAdminProfileActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -1,4 +1,4 @@
-package com.example.cse441_project.QuanLy;
+package com.example.cse441_project.fragment;
 
 import android.os.Bundle;
 
@@ -10,13 +10,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.cse441_project.R;
 
-public class ThongTinCaNhan extends AppCompatActivity {
+public class EditAdminProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.fragment_huong_ttcanhan);
+        setContentView(R.layout.activity_edit_admin_profile);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
