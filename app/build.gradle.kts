@@ -39,6 +39,15 @@ dependencies {
 
     // https://mvnrepository.com/artifact/at.favre.lib/bcrypt
     implementation("at.favre.lib:bcrypt:0.10.2")
+//=======
+//    // Import the BoM for the Firebase platform
+////    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+////
+////    // Declare the dependency for the Cloud Firestore library
+////    // When using the BoM, you don't specify versions in Firebase library dependencies
+////    implementation("com.google.firebase:firebase-firestore")
+////    implementation ("com.github.bumptech.glide:glide:4.16.0")
+////>>>>>>> main
 
 
     //Lombok
@@ -51,11 +60,12 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.firebase.auth)
     annotationProcessor("org.projectlombok:lombok:1.18.24")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.firebase.firestore)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

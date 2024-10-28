@@ -9,6 +9,7 @@ import  lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Book {
+
     private String id;
     private String name;
     private String description;
@@ -17,7 +18,6 @@ public class Book {
     private String image;
     private int quantity;
     private String publisherId;
-
 
 
 }
