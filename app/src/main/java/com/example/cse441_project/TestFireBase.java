@@ -11,12 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.example.cse441_project.model.Category;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
+
+
 
 import java.util.HashMap;
 
@@ -51,13 +50,13 @@ public class TestFireBase extends AppCompatActivity {
 
 
         });
-        firestore.collection("Category").get().addOnCompleteListener(task -> {
+        firestore.collection("Categories").get().addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         for(DocumentSnapshot documentSnapshot : task.getResult()){
-                            String categoryId = documentSnapshot.getString("categoryId");
+
                             String id1 = documentSnapshot.getId();
-                            String name1 = documentSnapshot.getString("categoryName");
-                            txtId.setText(categoryId);
+                            String name1 = documentSnapshot.getString("name");
+                            txtId.setText(id1);
                             txtName.setText(name1);
                         }
                     }

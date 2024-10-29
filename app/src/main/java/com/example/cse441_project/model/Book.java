@@ -8,16 +8,18 @@ import  lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Book {
 
     private String id;
     private String name;
     private String description;
-    List<String> authorId;
+    private String author;
     private String categoryId;
     private String image;
     private int quantity;
     private String publisherId;
+    private int publishYear;
 
 
 }
