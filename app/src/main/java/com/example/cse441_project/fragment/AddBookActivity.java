@@ -1,6 +1,7 @@
 package com.example.cse441_project.fragment;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,12 +11,13 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -26,16 +28,33 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.cse441_project.R;
+import com.example.cse441_project.model.Book;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import static android.content.ContentValues.TAG;
 import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
 
+
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import lombok.NonNull;
 
@@ -44,11 +63,16 @@ public class AddBookActivity extends AppCompatActivity {
     private ArrayAdapter<String> categoryAdapter, publisherAdapter;
     private List<String> categoryList, publisherList;
     private ImageButton btnCloseTab, btnOpenCamera, btnOpenGallery;
+    private Button btnSave;
     private ImageView imageViewBook;
+    EditText edtName, edtAuthor, edtDescription, edtPublishYear, edtQuantity;
 
     private final int CAM_REQ = 1000;
     private final int IMG_REQ = 2000;
     Uri imageUri;
+
+    StorageReference storageReference;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +84,23 @@ public class AddBookActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        db = FirebaseFirestore.getInstance();
+
+        // Ánh xạ id
         btnCloseTab = findViewById(R.id.btnCloseTab);
         btnOpenCamera = findViewById(R.id.btnOpenCamera);
         btnOpenGallery = findViewById(R.id.btnOpenGallery);
+        btnSave = findViewById(R.id.btnSave);
         imageViewBook = findViewById(R.id.imageViewBook);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerPublisher = findViewById(R.id.spinnerPublisher);
+        edtName = findViewById(R.id.edtName);
+        edtAuthor = findViewById(R.id.edtAuthor);
+        edtDescription = findViewById(R.id.edtDescription);
+        edtPublishYear = findViewById(R.id.edtPublishYear);
+        edtQuantity = findViewById(R.id.edtQuantity);
+
         categoryList = new ArrayList<>();
         publisherList = new ArrayList<>();
 
@@ -158,6 +193,120 @@ public class AddBookActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        // Button Lưu
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String name = edtName.getText().toString();
+                String author = edtAuthor.getText().toString();
+                String category = spinnerCategory.getSelectedItem().toString();
+                String description = edtDescription.getText().toString();
+                String publisher = spinnerPublisher.getSelectedItem().toString();
+                String publishYear = edtPublishYear.getText().toString();
+                String quantity = edtQuantity.getText().toString();
+
+
+                // Kiểm tra tất cả các thông tin và ảnh
+                if (!name.isEmpty() && !author.isEmpty() && !category.isEmpty() && !description.isEmpty()
+                        && !publisher.isEmpty() && !publishYear.isEmpty() && !quantity.isEmpty() && imageUri != null) {
+
+                    // Hiển thị ProgressDialog trong khi upload
+                    ProgressDialog progressDialog = new ProgressDialog(AddBookActivity.this);
+                    progressDialog.setTitle("Đang tải lên...");
+                    progressDialog.show();
+
+                    // Định dạng tên tệp ảnh để tránh trùng lặp
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy_MM_dd_HH_mm_ss");
+                    Date date = new Date();
+                    String fileFormat = simpleDateFormat.format(date);
+
+                    // Thiết lập đường dẫn ảnh trên Firebase Storage
+                    storageReference = FirebaseStorage.getInstance().getReference("images/" + fileFormat);
+                    storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    // Nhận được URL của ảnh sau khi upload thành công
+                                    String imageUrl = uri.toString();
+
+                                    String id = UUID.randomUUID().toString();
+
+                                    Map<String, Object> doc = new HashMap<>();
+                                    doc.put("id", id);
+                                    doc.put("name", name);
+                                    doc.put("author", author);
+                                    doc.put("categoryId", category);
+                                    doc.put("description", description);
+                                    doc.put("publisherId", publisher);
+                                    doc.put("publishYear", Integer.parseInt(publishYear));
+                                    doc.put("quantity", Integer.parseInt(quantity));
+                                    doc.put("image", imageUrl);
+
+                                    db.collection("Books").document(id).set(doc)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        // Tắt ProgressDialog và hiển thị thông báo thành công
+                                                        progressDialog.dismiss();
+                                                        Toast.makeText(AddBookActivity.this, "Thêm sách thành công!", Toast.LENGTH_SHORT).show();
+                                                        // Refresh dữ liệu trong BookFragment (nếu có)
+                                                        BookFragment.getInstance().docDulieu();
+                                                        finish();
+                                                    } else {
+                                                        // Tắt ProgressDialog và hiển thị lỗi
+                                                        progressDialog.dismiss();
+                                                        Log.d(TAG, "Lỗi khi thêm tài liệu", task.getException());
+                                                    }
+
+                                                }
+                                            });
+
+
+//                                    // Tạo đối tượng Book với URL ảnh
+//                                    Book newBook = new Book(null, name, description, author, category, imageUrl, Integer.parseInt(quantity), publisher, Integer.parseInt(publishYear));
+//
+//                                    // Lưu đối tượng Book vào Firestore
+//                                    CollectionReference booksCollection = firestore.collection("Books");
+//                                    booksCollection.add(newBook).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+//                                        @Override
+//                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+//                                            if (task.isSuccessful()) {
+//                                                // Tắt ProgressDialog và hiển thị thông báo thành công
+//                                                progressDialog.dismiss();
+//                                                Toast.makeText(AddBookActivity.this, "Thêm sách thành công!", Toast.LENGTH_SHORT).show();
+//
+//                                                // Refresh dữ liệu trong BookFragment (nếu có)
+//                                                BookFragment.getInstance().docDulieu();
+//                                                finish();
+//                                            } else {
+//                                                // Tắt ProgressDialog và hiển thị lỗi
+//                                                progressDialog.dismiss();
+//                                                Log.d(TAG, "Lỗi khi thêm tài liệu", task.getException());
+//                                            }
+//                                        }
+//                                    });
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@androidx.annotation.NonNull Exception e) {
+                            // Tắt ProgressDialog và hiển thị lỗi khi upload thất bại
+                            progressDialog.dismiss();
+                            Toast.makeText(AddBookActivity.this, "Tải ảnh lên thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    // Thông báo lỗi nếu thiếu thông tin hoặc ảnh
+                    Toast.makeText(AddBookActivity.this, "Vui lòng nhập đầy đủ thông tin và chọn ảnh", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
@@ -169,11 +318,23 @@ public class AddBookActivity extends AppCompatActivity {
             if (requestCode == CAM_REQ) {
                 Bitmap camBitmap = (Bitmap) data.getExtras().get("data");
                 imageViewBook.setImageBitmap(camBitmap);
+                // Chuyển Bitmap sang Uri và lưu vào imageUri
+                imageUri = getImageUri(getApplicationContext(), camBitmap);
             }
-            if (requestCode == IMG_REQ) {
+            if (requestCode == IMG_REQ && data != null && data.getData() != null) {
                 imageUri = data.getData();
                 imageViewBook.setImageURI(imageUri);
             }
         }
     }
+
+    // Chuyển đổi Bitmap sang Uri
+    private Uri getImageUri(Context context, Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
+        return Uri.parse(path);
+    }
+
+
 }

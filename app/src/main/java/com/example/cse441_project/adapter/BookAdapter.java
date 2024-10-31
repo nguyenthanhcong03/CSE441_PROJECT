@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +26,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private List<Book> list;
     private Context context;
 
-    public BookAdapter(Context context,List<Book> list) {
+    public BookAdapter(Context context, List<Book> list) {
         this.list = list;
         this.context = context;
     }
@@ -52,6 +53,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         holder.txtCategory.setText("Danh mục:" + bookCategory);
         holder.txtQuantity.setText("Số lượng:" + bookQuantity);
 
+
         // Load hình ảnh từ URL
         Glide.with(context)
                 .load(book.getImage())  // book.getImage() là URL của ảnh
@@ -69,12 +71,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 intent.putExtra("bookId", book.getId());
                 intent.putExtra("bookName", book.getName());
                 intent.putExtra("bookAuthor", book.getAuthor());
+                intent.putExtra("bookDescription", book.getDescription());
                 intent.putExtra("bookCategory", book.getCategoryId());
                 intent.putExtra("bookQuantity", book.getQuantity());
+                intent.putExtra("bookPublisher", book.getPublisherId());
                 intent.putExtra("bookPublishYear", book.getPublishYear());
+                intent.putExtra("bookImage", book.getImage()); // Chuyển ảnh
                 context.startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -82,18 +88,53 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         return list.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
-        TextView txtName,txtCategory,txtQuantity;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtName, txtCategory, txtQuantity;
         ImageView imgBook;
+        ImageButton btnEditBook;
+        View mView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            mView = itemView;
+
+            //itemClick
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mClickListener.onItemClick(view, getAdapterPosition());
+                }
+            });
+            //item long click listener
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mClickListener.onItemLongClick(view, getAdapterPosition());
+                    return true;
+                }
+            });
+
+            //initialize views
             imgBook = itemView.findViewById(R.id.imgBook);
             txtName = itemView.findViewById(R.id.txtName);
-            txtCategory=itemView.findViewById(R.id.txtCategory);
-            txtQuantity =itemView.findViewById(R.id.txtQuantity);
+            txtCategory = itemView.findViewById(R.id.txtCategory);
+            txtQuantity = itemView.findViewById(R.id.txtQuantity);
+        }
+
+        private ViewHolder.ClickListener mClickListener;
+
+        // interface for click listener
+        public interface ClickListener {
+            void onItemClick(View view, int position);
+
+            void onItemLongClick(View view, int position);
+        }
+
+        public void setOnClickListener(ViewHolder.ClickListener clickListener) {
+            mClickListener = clickListener;
         }
     }
+
+
 }
-
-
-

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragment.AddBookActivity">
+    tools:context=".fragment.EditBookActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Thêm sách"
+            android:text="Sửa sách"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
