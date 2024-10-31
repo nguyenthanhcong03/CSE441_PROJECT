@@ -102,7 +102,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 if (getActivity() instanceof MainActivity) {
                     if (((MainActivity) getActivity()).currentFragment != FRAGMENT_AUTHOR) {
-                        ((MainActivity) getActivity()).toolbarTitle.setText("Quản lý tác giả");
+                        ((MainActivity) getActivity()).toolbarTitle.setText("Thông tin tác giả");
                         replaceFragment(new AuthorFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_AUTHOR;
                         ((MainActivity) getActivity()).itemId = R.id.nav_manage_author; // Lưu ID item được chọn
@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 if (getActivity() instanceof MainActivity) {
                     if (((MainActivity) getActivity()).currentFragment != FRAGMENT_PUBLISHER) {
-                        ((MainActivity) getActivity()).toolbarTitle.setText("Quản lý nhà xuất bản");
+                        ((MainActivity) getActivity()).toolbarTitle.setText("Thông tin nhà xuất bản");
                         replaceFragment(new PublisherFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_PUBLISHER;
                         ((MainActivity) getActivity()).itemId = R.id.nav_manage_publisher; // Lưu ID item được chọn

@@ -13,7 +13,13 @@
         android:theme="@style/Theme.CSE441_PROJECT"
         tools:targetApi="31">
         <activity
-            android:name=".fragment.ChangePassWordActivity"
+            android:name=".fragment.EditPublisherActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragment.AddPublisherActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragment.ChangePasswordActivity"
             android:exported="false" />
         <activity
             android:name=".fragment.AddBookActivity"

@@ -2,6 +2,7 @@ package com.example.cse441_project.fragment;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +18,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.cse441_project.R;
 
-public class ChangePassWordActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends AppCompatActivity {
     private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_change_pass_word);
+        setContentView(R.layout.activity_manage_change_password);
 
         // Thiết lập toggle cho các trường mật khẩu
         setupPasswordVisibilityToggle(findViewById(R.id.edtPassword), findViewById(R.id.ivTogglePasswordVisibilityCurrent));
@@ -39,6 +40,9 @@ public class ChangePassWordActivity extends AppCompatActivity {
 
         Button btnSave = findViewById(R.id.button);
         btnSave.setOnClickListener(v -> showSuccessDialog());
+
+        ImageView imageViewBack = findViewById(R.id.btnBack);
+        imageViewBack.setOnClickListener(v -> finish());
     }
 
     private void setupPasswordVisibilityToggle(final EditText editText, final ImageView imageView) {
@@ -56,34 +60,34 @@ public class ChangePassWordActivity extends AppCompatActivity {
 
     private void showSuccessDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View customLayout = getLayoutInflater().inflate(R.layout.quanly_dialog_notification, null);
 
-        // Inflate the custom layout
-        View customLayout = getLayoutInflater().inflate(R.layout.quanly_dialog_success, null);
-
-        // Find the views in the custom layout and update the content
         TextView tvTitle = customLayout.findViewById(R.id.titleDialog);
         tvTitle.setText("Thông báo");
 
         TextView tvMessage = customLayout.findViewById(R.id.contentDialog);
         tvMessage.setText("Đổi mật khẩu thành công");
 
-        Button btnBack = customLayout.findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> {
-            dialog.dismiss();
-            finish();
-        });
-
-        // Set the custom layout to the dialog
         builder.setView(customLayout);
-
-        // Set other dialog properties
-        builder.setPositiveButton("Quay lại", (dialogInterface, i) -> {
-                    dialog.dismiss();
-                    finish();
-                })
-                .setCancelable(false);
+        builder.setCancelable(false);
 
         AlertDialog dialog = builder.create();
+
+        Button btnBack = customLayout.findViewById(R.id.btnBack);
+        btnBack.setText("Quay lại");
+        btnBack.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
         dialog.show();
+
+        new Handler().postDelayed(() -> {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }, 3000);
     }
+
+
+
 }
