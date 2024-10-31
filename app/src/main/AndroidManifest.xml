@@ -13,19 +13,18 @@
         android:theme="@style/Theme.CSE441_PROJECT"
         tools:targetApi="31">
         <activity
-            android:name=".fragment.AddBookActivity"
+            android:name=".AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".TestFireBase"
-            android:exported="true" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
+            android:name=".StudentActivity"
+            android:exported="false"
+            android:label="@string/title_activity_student"
+            android:theme="@style/Theme.CSE441_PROJECT.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name=".RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +32,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TestFireBase"
+            android:exported="true">
+
+
+
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
