@@ -1,235 +1,264 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
 
-    tools:context=".RegisterActivity">
-
-
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="4dp"
-        android:background="@android:color/transparent"
-
-        android:src="@drawable/ic_back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="Đăng ký"
-        android:textColor="#3D4446"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-
-        android:id="@+id/linearLayoutFullName"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:orientation="vertical"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
+        android:layout_height="match_parent"
+
+        tools:context=".RegisterActivity">
+
+
+
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:background="@android:color/transparent"
+
+            android:src="@drawable/ic_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewFullname"
-            android:layout_width="match_parent"
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Họ và tên"
-            android:textColor="#858585"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/editTextFullname"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@drawable/background_register"
-            android:ems="10"
-            android:hint="Họ và tên"
-            android:padding="5dp" />
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:id="@+id/linearLayoutGmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:orientation="vertical"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutFullName">
-
-        <TextView
-            android:id="@+id/textViewGmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-
-            android:text="Gmail"
-            android:textColor="#858585"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/editTextGmail"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@drawable/background_register"
-            android:ems="10"
-            android:hint="ex: abcd088@gmail.com"
-            android:padding="5dp" />
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:id="@+id/linearLayoutUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="6dp"
-        android:orientation="vertical"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutGmail">
-
-        <TextView
-            android:id="@+id/textViewUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-
-            android:text="Tên đăng nhập"
-            android:textColor="#858585"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/editTextUsername"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@drawable/background_register"
-            android:ems="10"
-            android:hint="ex: userapp001"
-            android:padding="5dp" />
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:id="@+id/linearLayoutPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:orientation="vertical"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutUsername">
-
-        <TextView
-            android:id="@+id/textViewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Mật khẩu"
-
-            android:textColor="#858585"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@drawable/background_register"
-            android:inputType="textPassword"
-            android:drawableEnd="@drawable/eye"
-            android:importantForAccessibility="yes"
-            android:ems="10"
-            android:padding="5dp" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_marginTop="6dp"
-        android:background="@drawable/img_register"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutPassword">
+            android:layout_marginTop="44dp"
+            android:text="Đăng ký"
+            android:textColor="#3D4446"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
+
+            android:id="@+id/linearLayoutFullName"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4">
 
-            <LinearLayout
-
-                android:id="@+id/linearLayoutComfirmPassword"
+            <TextView
+                android:id="@+id/textViewFullname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                android:padding="10dp"
-                app:layout_constraintStart_toStartOf="parent">
+                android:layout_marginBottom="8dp"
+                android:text="Họ và tên"
+                android:textColor="#858585"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/textViewComfirmPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="Xác nhận mật khẩu"
-                    android:textColor="#858585"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/editTextComfirmPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@drawable/background_register"
-                    android:inputType="textPassword"
-                    android:drawableEnd="@drawable/eye"
-                    android:importantForAccessibility="yes"
-                    android:ems="10"
-                    android:padding="5dp" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="170dp"
-                android:layout_height="65dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginTop="40dp"
-                android:backgroundTint="#3D4446"
-                android:text="Hoàn tất"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-
-                app:layout_constraintVertical_bias="0.151" />
+            <EditText
+                android:id="@+id/editTextFullname"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/background_register"
+                android:ems="10"
+                android:hint="Họ và tên"
+                android:padding="5dp" />
         </LinearLayout>
 
+        <LinearLayout
 
-    </RelativeLayout>
+            android:id="@+id/linearLayoutGmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutFullName">
+
+            <TextView
+                android:id="@+id/textViewGmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+
+                android:text="Gmail"
+                android:textColor="#858585"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/editTextGmail"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/background_register"
+                android:ems="10"
+                android:hint="ex: abcd088@gmail.com"
+                android:padding="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:id="@+id/linearLayoutUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="6dp"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutGmail">
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textViewUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+
+                android:text="Tên đăng nhập"
+                android:textColor="#858585"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/editTextUsername"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/background_register"
+                android:ems="10"
+                android:hint="ex: userapp001"
+                android:padding="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:id="@+id/linearLayoutPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutUsername">
+
+            <TextView
+                android:id="@+id/textViewPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Mật khẩu"
+
+                android:textColor="#858585"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/background_register"
+                android:inputType="textPassword"
+                android:drawableEnd="@drawable/eye"
+                android:importantForAccessibility="yes"
+                android:ems="10"
+                android:padding="5dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/img_register"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutPassword">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+
+                    android:id="@+id/linearLayoutComfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/textViewComfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="Xác nhận mật khẩu"
+                        android:textColor="#858585"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/editTextComfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/background_register"
+                        android:drawableEnd="@drawable/eye"
+                        android:ems="10"
+                        android:importantForAccessibility="yes"
+                        android:inputType="textPassword"
+                        android:padding="5dp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonSubmit"
+                    android:layout_width="170dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:backgroundTint="#3D4446"
+                    android:text="Hoàn tất"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+
+                    app:layout_constraintVertical_bias="0.151" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/overlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center" />
+
+</FrameLayout>
+

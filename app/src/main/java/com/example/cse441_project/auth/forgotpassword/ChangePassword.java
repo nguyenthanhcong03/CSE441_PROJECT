@@ -1,4 +1,4 @@
-package com.example.cse441_project;
+package com.example.cse441_project.auth.forgotpassword;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -7,13 +7,11 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -23,59 +21,58 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.cse441_project.LoginActivity;
+import com.example.cse441_project.R;
 import com.example.cse441_project.auth.Constants;
-
+import com.example.cse441_project.auth.PreferenceManager;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
+
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
-
-public class RegisterActivity extends AppCompatActivity {
-    EditText editTextPassword, editTextConfirmPassword,
-            editTextFullname, editTextUsername, editTextGmail;
-    ImageButton btnBack;
-    Button btnRegister;
+public class ChangePassword extends AppCompatActivity {
+    EditText editTextCurrentKey, editTextPassword, editTextConfirmPassword;
     ProgressBar loadingProgressBar;
     View overlayView;
+    Button btnSubmit;
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-
-    //    @SuppressLint({"ClickableViewAccessibility", "MissingInflatedId"})
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_change_password);
+        editTextCurrentKey = findViewById(R.id.editTextCurrentKey);
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextConfirmPassword = findViewById(R.id.editTextComfirmPassword);
-        editTextUsername = findViewById(R.id.editTextUsername);
-        editTextFullname = findViewById(R.id.editTextFullname);
-        editTextGmail = findViewById(R.id.editTextGmail);
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
         overlayView = findViewById(R.id.overlayView);
-        btnBack = findViewById(R.id.btnBack);
-        //
-        btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-            startActivity(intent);
+        PreferenceManager preferenceManager = new PreferenceManager(this);
+        String email = preferenceManager.getString(Constants.KEY_EMAIL);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
         });
 
-        //Dang ky
-        btnRegister = findViewById(R.id.buttonSubmit);
-        btnRegister.setOnClickListener(v -> {
+        btnSubmit = findViewById(R.id.buttonSubmit);
+        btnSubmit.setOnClickListener(v -> {
 
             if (validateForm()) {
 
-                registerUser();
+                changePassword(email);
             } else {
                 Toast.makeText(this, "Vui long nhap day du thong tin", Toast.LENGTH_SHORT).show();
             }
 
         });
+
         //An hien mat khau
         editTextPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -110,6 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        //Nhap mk khi cham vao nhap thi mat khau duoc hien thi che dau
         editTextPassword.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (event.getRawX() >= (editTextPassword.getRight() - editTextPassword.getCompoundDrawables()[2].getBounds().width())) {
@@ -131,13 +129,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
             return false;
-        });
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
         });
     }
 
@@ -175,43 +166,9 @@ public class RegisterActivity extends AppCompatActivity {
         editTextPassword.setSelection(editTextPassword.length());
     }
 
-    //Validate 
+    //Validate
     private boolean validateForm() {
         boolean valid = true;
-        // Kiểm tra Fullname
-        String fullname = editTextFullname.getText().toString();
-        if (TextUtils.isEmpty(fullname)) {
-            editTextFullname.setError("Họ và tên không được để trống");
-            valid = false;
-        } else if (!fullname.matches("[a-zA-ZÀ-ỹ\\s]+")) {
-            editTextFullname.setError("Họ và tên không được chứa chữ số hoặc ký tự đặc biệt");
-            valid = false;
-        } else {
-            editTextFullname.setError(null);
-        }
-        // Kiểm tra Username
-        String username = editTextUsername.getText().toString();
-        if (TextUtils.isEmpty(username)) {
-            editTextUsername.setError("Tên đăng nhập không được để trống");
-            valid = false;
-        } else if (!username.matches("[a-zA-Z0-9]+")) {
-            editTextUsername.setError("Tên đăng nhập không được chứa ký tự đặc biệt");
-            valid = false;
-        } else {
-            editTextUsername.setError(null);
-        }
-
-        // Kiểm tra Email
-        String email = editTextGmail.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            editTextGmail.setError("Email không được để trống");
-            valid = false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            editTextGmail.setError("Email không hợp lệ");
-            valid = false;
-        } else {
-            editTextGmail.setError(null);
-        }
 
         // Kiểm tra Password
         String password = editTextPassword.getText().toString();
@@ -251,84 +208,61 @@ public class RegisterActivity extends AppCompatActivity {
 
         return valid;
     }
-
-    //Register
-    private void registerUser() {
-        // Hiển thị ProgressBar
+    //Ham doi mat khau
+    private void changePassword(String email) {
         showLoadingOverlay();
+        // Get the entered currentKey and new password
+        String enteredCurrentKey = editTextCurrentKey.getText().toString().trim();
+        String newPassword = editTextPassword.getText().toString().trim();
 
-        // Lấy dữ liệu người dùng từ các trường EditText
-        String fullname = editTextFullname.getText().toString();
-        String username = editTextUsername.getText().toString();
-        String email = editTextGmail.getText().toString();
-        String password = editTextPassword.getText().toString();
-
-        // Tạo truy vấn để kiểm tra username trong Firestore
-        Task<QuerySnapshot> queryUsernameTask = firestore.collection(Constants.KEY_COLLECTION_USERS)
-                .whereEqualTo(Constants.KEY_USERNAME, username)
-                .get();
-
-        // Tạo truy vấn để kiểm tra email trong Firestore
-        Task<QuerySnapshot> queryEmailTask = firestore.collection(Constants.KEY_COLLECTION_USERS)
+        // Firestore query to get user document by email
+        firestore.collection("Users")
                 .whereEqualTo(Constants.KEY_EMAIL, email)
-                .get();
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        DocumentSnapshot userDoc = task.getResult().getDocuments().get(0);
+                        String storedCurrentKey = userDoc.getString(Constants.KEY_CURRENT_KEY);
+                        String storedPasswordHash = userDoc.getString("password");
 
-        // Chạy cả hai truy vấn
-        Tasks.whenAllComplete(queryUsernameTask, queryEmailTask).addOnCompleteListener(task -> {
-            boolean usernameExists = false;
-            boolean emailExists = false;
-
-            // Kiểm tra kết quả truy vấn username
-            if (queryUsernameTask.isSuccessful() && queryUsernameTask.getResult() != null) {
-                usernameExists = !queryUsernameTask.getResult().isEmpty();
-            }
-
-            // Kiểm tra kết quả truy vấn email
-            if (queryEmailTask.isSuccessful() && queryEmailTask.getResult() != null) {
-                emailExists = !queryEmailTask.getResult().isEmpty();
-            }
-
-            // Thông báo nếu username hoặc email đã tồn tại
-            if (usernameExists) {
-                editTextUsername.setError("Tên đăng nhập đã tồn tại");
-                Toast.makeText(this, "Tên đăng nhập đã tồn tại", Toast.LENGTH_SHORT).show();
-                hideLoadingOverlay();
-            } else if (emailExists) {
-                editTextGmail.setError("Email đã tồn tại");
-                Toast.makeText(this, "Email đã tồn tại", Toast.LENGTH_SHORT).show();
-                hideLoadingOverlay();
-            } else {
-                // Nếu không tồn tại, tiếp tục đăng ký
-                HashMap<String, String> user = new HashMap<>();
-                user.put(Constants.KEY_NAME, fullname);
-                user.put(Constants.KEY_USERNAME, username);
-                user.put(Constants.KEY_EMAIL, email);
-
-                // Hash mật khẩu trước khi thêm vào Firestore
-                String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-                user.put(Constants.KEY_PASSWORD, hashedPassword);
-                user.put(Constants.KEY_ROLE, "Student");
-                user.put(Constants.KEY_ADDRESS, "");
-                user.put(Constants.KEY_PHONE, "");
-                user.put(Constants.KEY_GENDER, "");
-                user.put(Constants.KEY_BIRTHDAY, "");
-                user.put(Constants.KEY_CURRENT_KEY, "");
-                // Đăng dữ liệu với Firestore
-                firestore.collection("Users")
-                        .add(user)
-                        .addOnSuccessListener(documentReference -> {
+                        // Check if the entered currentKey matches the stored one
+                        if (!enteredCurrentKey.equals(storedCurrentKey)) {
                             hideLoadingOverlay();
-                            Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                            editTextCurrentKey.setError("Current key hợp lệ");
+                            Toast.makeText(this, "Current key không hợp lệ", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-                            // Chuyển đến màn hình đăng nhập
-                            startActivity(new Intent(this, LoginActivity.class));
-                            finish();
-                        })
-                        .addOnFailureListener(e -> {
+                        // Check if the new password is different from the old password
+                        if (BCrypt.verifyer().verify(newPassword.toCharArray(), storedPasswordHash).verified) {
                             hideLoadingOverlay();
-                            Toast.makeText(this, "Đăng ký thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        });
-            }
-        });
+                            editTextPassword.setError("Mật khẩu mới không được giống mật khẩu cũ");
+                            Toast.makeText(this, "Mật khẩu mới không được giống mật khẩu cũ", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        // Update password and clear currentKey
+                        HashMap<String, Object> updates = new HashMap<>();
+                        updates.put(Constants.KEY_PASSWORD, BCrypt.withDefaults().hashToString(12, newPassword.toCharArray())); // Hash the new password
+                        updates.put(Constants.KEY_CURRENT_KEY, ""); // Clear currentKey
+
+                        userDoc.getReference().update(updates)
+                                .addOnSuccessListener(aVoid -> {
+                                    hideLoadingOverlay();
+                                    Toast.makeText(this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(ChangePassword.this, LoginActivity.class));
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                    hideLoadingOverlay();
+                                    Toast.makeText(this, "Có lỗi xảy ra khi đổi mật khẩu", Toast.LENGTH_SHORT).show();
+                                });
+                    } else {
+                        hideLoadingOverlay();
+                        Toast.makeText(this, "Không tìm thấy người dùng", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
+
+
 }
