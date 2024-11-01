@@ -5,4 +5,13 @@
         <item name="android:textSize">18sp</item> <!-- Thay 18sp bằng kích thước mong muốn -->
         <item name="android:textColor">@color/white</item> <!-- Thay màu sắc mong muốn -->
     </style>
+
+
+    <style name="CustomSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:background">#00000000</item> <!-- Sử dụng màu trong suốt -->
+    </style>
+    <style name="BottomNavigationViewText" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

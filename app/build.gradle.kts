@@ -16,6 +16,13 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    packaging {
+        resources {
+            excludes.add("META-INF/NOTICE.md")
+            excludes.add("META-INF/LICENSE.md")
+        }
+    }
+
 
     buildTypes {
         release {
@@ -59,7 +66,13 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
     annotationProcessor("org.projectlombok:lombok:1.18.24")
+
+    implementation(libs.android.mail)
+    implementation(libs.android.activation)
+
+
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -70,4 +83,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(kotlin("script-runtime"))
+
 }

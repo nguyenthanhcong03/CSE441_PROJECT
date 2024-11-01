@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.cse441_project.auth.Constants;
 import com.example.cse441_project.auth.PreferenceManager;
 
+import com.example.cse441_project.auth.forgotpassword.ForgotPassword;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -32,6 +34,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 public class LoginActivity extends AppCompatActivity {
     EditText editTextPassword, editTextUsername;
     Button btnLogin;
+    TextView signUp, textViewForgotPassword;
     //
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
@@ -46,7 +49,19 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextUsername = findViewById(R.id.editTextUsername);
         btnLogin = findViewById(R.id.buttonLogin);
+        signUp = findViewById(R.id.textViewSignUp);
+        textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
+        textViewForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPassword.class);
+            startActivity(intent);
+        });
 
+        //
+        signUp.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+        //
         editTextPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -149,35 +164,24 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(this, "Role không hợp lệ", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
+                                    editTextPassword.setError("Mật khẩu không đúng");
                                     Toast.makeText(this, "Mật khẩu không đúng", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
+                                editTextUsername.setError("Tên đăng nhập không tồn tại");
                                 Toast.makeText(this, "Tên đăng nhập không tồn tại", Toast.LENGTH_SHORT).show();
                             }
                         } else {
+                            editTextUsername.setError("Tên đăng nhập không tồn tại");
+
                             Toast.makeText(this, "Tên đăng nhập không tồn tại", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(this, "Lỗi Firestore: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
-        }
+    }
 
 
-//                        // Kiểm tra mật khẩu với bcrypt
-//                        if (BCrypt.checkpw(password, storedPasswordHash)) {
-//                            // Xác thực thành công
-//                            if ("Admin".equals(role)) {
-//                                startActivity(new Intent(this, AdminActivity.class));
-//                            } else if ("Student".equals(role)) {
-//                                startActivity(new Intent(this, StudentActivity.class));
-//                            } else {
-//                                Toast.makeText(this, "Role không hợp lệ", Toast.LENGTH_SHORT).show();
-//                            }
-//                        } else {
-//                            Toast.makeText(this, "Mật khẩu không đúng", Toast.LENGTH_SHORT).show();
-//                        }
-//                    } else {
-//                        Toast.makeText(this, "Tên đăng nhập không tồn tại", Toast.LENGTH_SHORT).show();
-//                    }
+
 }
