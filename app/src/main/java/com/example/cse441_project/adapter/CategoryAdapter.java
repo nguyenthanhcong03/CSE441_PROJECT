@@ -7,9 +7,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,18 +14,11 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cse441_project.R;
-import com.example.cse441_project.fragment.CategoryDetailActivity;
 import com.example.cse441_project.fragment.CategoryFragment;
 import com.example.cse441_project.fragment.EditCategoryActivity;
-import com.example.cse441_project.fragment.EditCategoryActivity;
 import com.example.cse441_project.model.Category;
-import com.example.cse441_project.model.Category;
-import com.example.cse441_project.model.Category;
-import com.bumptech.glide.Glide;
 
-import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
@@ -48,7 +38,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // inflate layout
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(itemView);
         //Handle item click
@@ -58,14 +47,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 // this will be called when user click item
 
                 // show data in toast on clicking
-                String id = list.get(position).getId();
-                String name = list.get(position).getName();
-
-                Intent intent = new Intent(listActivity, CategoryDetailActivity.class);
-                intent.putExtra("pId", id);
-                intent.putExtra("pName", name);
-
-                listActivity.startActivity(intent);
+//                String id = list.get(position).getId();
+//                String name = list.get(position).getName();
+//
+//                Intent intent = new Intent(listActivity, CategoryDetailActivity.class);
+//                intent.putExtra("pId", id);
+//                intent.putExtra("pName", name);
+//
+//                listActivity.startActivity(intent);
 
                 //Toast.makeText(listActivity, categoryName + "\n" + categoryCategory + "\n" + categoryQuantity, Toast.LENGTH_SHORT).show();
             }

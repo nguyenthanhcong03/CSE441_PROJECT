@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,54 +16,77 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.cse441_project.R;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class BookDetailActivity extends AppCompatActivity {
-    TextView txtBookName, txtBookAuthor, txtBookDescription, txtBookCategory, txtBookQuantity, txtBookPublisher, txtBookPublishYear;
-    ImageButton btnEditBook, btnDeleteBook;
+    TextView txtName, txtAuthor, txtDescription, txtCategory, txtQuantity, txtPublisher, txtPublishYear, txtBorrowedBooks, txtAvailableBooks;
+    ImageButton btnDelete, btnEdit;
     ImageView imageViewBook;
+
+    String pId, pName, pCategory, pAuthor, pDescription, pPublisher, pPublishYear, pQuantity, pImage;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        txtBookName = findViewById(R.id.txtBookName);
-        txtBookAuthor = findViewById(R.id.txtBookAuthor);
-        txtBookDescription = findViewById(R.id.txtBookDescription);
-        txtBookCategory = findViewById(R.id.txtBookCategory);
-        txtBookQuantity = findViewById(R.id.txtBookQuantity);
-        txtBookPublishYear = findViewById(R.id.txtBookPublishYear);
-        txtBookPublisher = findViewById(R.id.txtBookPublisher);
+        db = FirebaseFirestore.getInstance();
+
+        txtName = findViewById(R.id.txtName);
+        txtAuthor = findViewById(R.id.txtAuthor);
+        txtDescription = findViewById(R.id.txtDescription);
+        txtCategory = findViewById(R.id.txtCategory);
+        txtQuantity = findViewById(R.id.txtQuantity);
+        txtPublishYear = findViewById(R.id.txtPublishYear);
+        txtPublisher = findViewById(R.id.txtPublisher);
         imageViewBook = findViewById(R.id.imageViewBook);
+        txtBorrowedBooks = findViewById(R.id.txtBorrowedBooks);
+        txtAvailableBooks = findViewById(R.id.txtAvailableBooks);
 
-        btnEditBook = findViewById(R.id.btnEditBook);
-        btnDeleteBook = findViewById(R.id.btnDeleteBook);
+        btnEdit = findViewById(R.id.btnEdit);
+        btnDelete = findViewById(R.id.btnDelete);
 
-        // Nhận dữ liệu từ Intent
-        Intent intent = getIntent();
-        String bookName = intent.getStringExtra("bookName");
-        String bookAuthor = intent.getStringExtra("bookAuthor");
-        String bookDescription = intent.getStringExtra("bookDescription");
-        String bookCategory = intent.getStringExtra("bookCategory");
-        int bookQuantity = intent.getIntExtra("bookQuantity", 0);
-        String bookPublisher = intent.getStringExtra("bookPublisher");
-        int bookPublishYear = intent.getIntExtra("bookPublishYear", 0);
-        String image = intent.getStringExtra("bookImage"); // Nhận URI ảnh
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            pId = bundle.getString("pId");
+            pName = bundle.getString("pName");
+            pAuthor = bundle.getString("pAuthor");
+            pCategory = bundle.getString("pCategory");
+            pDescription = bundle.getString("pDescription");
+            pPublisher = bundle.getString("pPublisher");
+            pPublishYear = bundle.getString("pPublishYear");
+            pQuantity = bundle.getString("pQuantity");
+            pImage = bundle.getString("pImage");
 
-
-        // Hiển thị thông tin sách
-        txtBookName.setText("Tên sách: " + bookName);
-        txtBookAuthor.setText("Tác giả: " + bookAuthor);
-        txtBookDescription.setText("Mô tả: " + bookDescription);
-        txtBookCategory.setText("Danh mục: " + bookCategory);
-        txtBookQuantity.setText("Số lượng: " + bookQuantity);
-        txtBookPublishYear.setText("Năm xuất bản: " + bookPublishYear);
-        txtBookPublisher.setText("Nhà xuất bản: " + bookPublisher);
-        // Sử dụng Glide để tải ảnh vào ImageView
-        Glide.with(this).load(image).into(imageViewBook);
+            fetchBorrowedAndAvailableBooks(pId, Integer.parseInt(pQuantity));
 
 
-        btnEditBook.setOnClickListener(new View.OnClickListener() {
+            txtName.setText(pName);
+            txtAuthor.setText(pAuthor);
+//            txtCategory.setText(pCategory);
+            txtDescription.setText(pDescription);
+//            txtPublisher.setText(pPublisher);
+            txtPublishYear.setText(pPublishYear);
+            txtQuantity.setText(pQuantity);
+
+            // Thiết lập hình ảnh
+            Glide.with(this).load(pImage).into(imageViewBook);
+
+            fetchCategoryName(pCategory);
+            fetchPublisherName(pPublisher);
+
+        }
+
+
+
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(BookDetailActivity.this, EditBookActivity.class);
@@ -73,5 +97,53 @@ public class BookDetailActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void fetchCategoryName(String categoryId) {
+        db.collection("Categories").document(categoryId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String categoryName = documentSnapshot.getString("name");
+                        txtCategory.setText(categoryName);  // Cập nhật tên Category
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    txtCategory.setText("Không xác định");
+                });
+    }
+
+    private void fetchPublisherName(String publisherId) {
+        db.collection("Publishers").document(publisherId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String publisherName = documentSnapshot.getString("name");
+                        txtPublisher.setText(publisherName);  // Cập nhật tên Publisher
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    txtPublisher.setText("Không xác định");
+                });
+    }
+
+    private void fetchBorrowedAndAvailableBooks(String bookId, int totalQuantity) {
+        db.collection("BorrowedBooks")
+                .whereEqualTo("bookId", bookId)
+                .whereEqualTo("status", "")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    int borrowedCount = queryDocumentSnapshots.size();  // Số sách đang mượn
+
+                    // Tính số sách còn lại
+                    int availableCount = totalQuantity - borrowedCount;
+
+                    // Hiển thị số sách đang mượn và số sách còn lại
+                    txtBorrowedBooks.setText(borrowedCount+"");
+                    txtAvailableBooks.setText(availableCount+"");
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(BookDetailActivity.this, "Lỗi khi lấy dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

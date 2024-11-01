@@ -39,8 +39,8 @@ import java.util.List;
 
 public class CategoryFragment extends Fragment {
     private static CategoryFragment instance;
-    static ProgressDialog pd;
-    static FirebaseFirestore db;
+    private ProgressDialog pd;
+    private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private List<Category> list;
     private CategoryAdapter categoryAdapter;
@@ -105,7 +105,6 @@ public class CategoryFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
@@ -152,10 +151,6 @@ public class CategoryFragment extends Fragment {
                 });
     }
 
-    public static CategoryFragment getInstance() {
-        return instance;
-    }
-
     private void search(String query) {
         list.clear();
         txtNoResults.setVisibility(View.GONE); // Ẩn TextView ban đầu
@@ -186,5 +181,9 @@ public class CategoryFragment extends Fragment {
                         // Xử lý lỗi
                     }
                 });
+    }
+
+    public static CategoryFragment getInstance() {
+        return instance;
     }
 }

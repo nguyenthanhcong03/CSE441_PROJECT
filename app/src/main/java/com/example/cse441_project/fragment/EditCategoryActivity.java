@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class EditCategoryActivity extends AppCompatActivity {
 
-    TextView edtName;
+    EditText edtName;
     Button btnSave;
     ImageButton btnCloseTab;
 
@@ -76,6 +77,15 @@ public class EditCategoryActivity extends AppCompatActivity {
 
                     //uploadData(name);
                 }
+            }
+        });
+
+        btnCloseTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //BookFragment.getInstance().docDulieu();
+                finish();
             }
         });
     }

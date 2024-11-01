@@ -9,18 +9,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
@@ -70,9 +75,17 @@ public class AddBookActivity extends AppCompatActivity {
     private final int CAM_REQ = 1000;
     private final int IMG_REQ = 2000;
     Uri imageUri;
-
+    ProgressDialog pd;
     StorageReference storageReference;
     FirebaseFirestore db;
+
+    ArrayList<String> categoryNames = new ArrayList<>();
+    HashMap<String, String> categoryMap = new HashMap<>();
+    String selectedCategoryId;
+
+    ArrayList<String> publisherNames = new ArrayList<>();
+    HashMap<String, String> publisherMap = new HashMap<>();
+    String selectedPublisherId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +98,7 @@ public class AddBookActivity extends AppCompatActivity {
             return insets;
         });
 
+        pd = new ProgressDialog(this);
         db = FirebaseFirestore.getInstance();
 
         // Ánh xạ id
@@ -103,8 +117,6 @@ public class AddBookActivity extends AppCompatActivity {
 
         categoryList = new ArrayList<>();
         publisherList = new ArrayList<>();
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         btnOpenCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,58 +146,91 @@ public class AddBookActivity extends AppCompatActivity {
             }
         });
 
-        // Thiết lập văn bản mặc định cho Spinner
-        //categoryList.add("Chọn danh mục"); // Văn bản mặc định
+        loadCategories();
+//        // Tải dữ liệu Category từ Firestore và đổ vào Spinner
+//        db.collection("Categories").get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                for (QueryDocumentSnapshot document : task.getResult()) {
+//                    String categoryId = document.getId();
+//                    String categoryName = document.getString("name");
+//
+//                    categoryNames.add(categoryName);
+//                    categoryMap.put(categoryName, categoryId);
+//                }
+//
+//                ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
+//                categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                spinnerCategory.setAdapter(categoryAdapter);
+//            } else {
+//                Toast.makeText(this, "Lỗi khi tải danh mục", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
-        // Tạo Adapter cho Spinner
-        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryList);
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(categoryAdapter);
+        loadPublishers();
 
-        publisherAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, publisherList);
-        publisherAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPublisher.setAdapter(publisherAdapter);
+//        // Tải dữ liệu Publisher từ Firestore và đổ vào Spinner
+//        db.collection("Publishers").get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                for (QueryDocumentSnapshot document : task.getResult()) {
+//                    String publisherId = document.getId();
+//                    String publisherName = document.getString("name");
+//
+//                    publisherNames.add(publisherName);
+//                    publisherMap.put(publisherName, publisherId);
+//                }
+//
+//                ArrayAdapter<String> publisherAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, publisherNames);
+//                publisherAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                spinnerPublisher.setAdapter(publisherAdapter);
+//            } else {
+//                Toast.makeText(this, "Lỗi khi tải danh mục", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
-        // Lấy danh mục từ Firestore
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        firestore.collection("Categories") // Thay đổi tên collection nếu cần
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String categoryName = document.getString("name"); // Thay đổi tên trường nếu cần
-                                categoryList.add(categoryName); // Thêm tên danh mục vào danh sách
-                            }
-                            categoryAdapter.notifyDataSetChanged(); // Cập nhật Adapter
-                        } else {
-                            Log.d("TAG", "Error getting categories: ", task.getException());
-                        }
-                    }
-                });
+        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCategoryName = categoryNames.get(position);
+                if (selectedCategoryName.equals("Thêm danh mục mới")) {
+                    // Hiển thị dialog để thêm danh mục mới
+                    showAddCategoryDialog();
+                    // Đặt lại selectedCategoryId để cho phép chọn lại
+                    spinnerCategory.setSelection(0);
 
-        // Lấy nhà xuất bản từ Firestore
-        firestore.collection("Categories") // Thay đổi tên collection nếu cần
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String publisherName = document.getString("name"); // Thay đổi tên trường nếu cần
-                                publisherList.add(publisherName); // Thêm tên nhà xuất bản vào danh sách
-                            }
-                            publisherAdapter.notifyDataSetChanged(); // Cập nhật Adapter
-                        } else {
-                            Log.d("TAG", "Error getting publishers: ", task.getException());
-                        }
-                    }
-                });
+                } else {
+                    // Lưu ID của danh mục đã chọn
+                    selectedCategoryId = categoryMap.get(selectedCategoryName);
+                }
+            }
 
-//        Đặt chọn mặc định cho Spinner
-//        spinnerCategory.setSelection(0);
-//        spinnerPublisher.setSelection(0);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedCategoryId = null;
+            }
+        });
+
+
+        spinnerPublisher.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedPublisherName = publisherNames.get(position);
+                if (selectedPublisherName.equals("Thêm nhà xuất bản mới")) {
+                    // Hiển thị dialog để thêm nhà xuất bản mới
+                    showAddPublisherDialog();
+                    spinnerPublisher.setSelection(0);
+
+                } else {
+                    // Lưu ID của nhà xuất bản đã chọn
+                    selectedPublisherId = publisherMap.get(selectedPublisherName);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedPublisherId = null;
+            }
+        });
+
 
         btnCloseTab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,124 +239,97 @@ public class AddBookActivity extends AppCompatActivity {
             }
         });
 
-        // Button Lưu
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String name = edtName.getText().toString();
                 String author = edtAuthor.getText().toString();
-                String category = spinnerCategory.getSelectedItem().toString();
                 String description = edtDescription.getText().toString();
-                String publisher = spinnerPublisher.getSelectedItem().toString();
                 String publishYear = edtPublishYear.getText().toString();
                 String quantity = edtQuantity.getText().toString();
 
+                uploadData(name, author, selectedCategoryId, description, selectedPublisherId, publishYear, quantity);
 
-                // Kiểm tra tất cả các thông tin và ảnh
-                if (!name.isEmpty() && !author.isEmpty() && !category.isEmpty() && !description.isEmpty()
-                        && !publisher.isEmpty() && !publishYear.isEmpty() && !quantity.isEmpty() && imageUri != null) {
-
-                    // Hiển thị ProgressDialog trong khi upload
-                    ProgressDialog progressDialog = new ProgressDialog(AddBookActivity.this);
-                    progressDialog.setTitle("Đang tải lên...");
-                    progressDialog.show();
-
-                    // Định dạng tên tệp ảnh để tránh trùng lặp
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy_MM_dd_HH_mm_ss");
-                    Date date = new Date();
-                    String fileFormat = simpleDateFormat.format(date);
-
-                    // Thiết lập đường dẫn ảnh trên Firebase Storage
-                    storageReference = FirebaseStorage.getInstance().getReference("images/" + fileFormat);
-                    storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    // Nhận được URL của ảnh sau khi upload thành công
-                                    String imageUrl = uri.toString();
-
-                                    String id = UUID.randomUUID().toString();
-
-                                    Map<String, Object> doc = new HashMap<>();
-                                    doc.put("id", id);
-                                    doc.put("name", name);
-                                    doc.put("author", author);
-                                    doc.put("categoryId", category);
-                                    doc.put("description", description);
-                                    doc.put("publisherId", publisher);
-                                    doc.put("publishYear", Integer.parseInt(publishYear));
-                                    doc.put("quantity", Integer.parseInt(quantity));
-                                    doc.put("image", imageUrl);
-
-                                    db.collection("Books").document(id).set(doc)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        // Tắt ProgressDialog và hiển thị thông báo thành công
-                                                        progressDialog.dismiss();
-                                                        Toast.makeText(AddBookActivity.this, "Thêm sách thành công!", Toast.LENGTH_SHORT).show();
-                                                        // Refresh dữ liệu trong BookFragment (nếu có)
-                                                        BookFragment.getInstance().docDulieu();
-                                                        finish();
-                                                    } else {
-                                                        // Tắt ProgressDialog và hiển thị lỗi
-                                                        progressDialog.dismiss();
-                                                        Log.d(TAG, "Lỗi khi thêm tài liệu", task.getException());
-                                                    }
-
-                                                }
-                                            });
-
-
-//                                    // Tạo đối tượng Book với URL ảnh
-//                                    Book newBook = new Book(null, name, description, author, category, imageUrl, Integer.parseInt(quantity), publisher, Integer.parseInt(publishYear));
-//
-//                                    // Lưu đối tượng Book vào Firestore
-//                                    CollectionReference booksCollection = firestore.collection("Books");
-//                                    booksCollection.add(newBook).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-//                                            if (task.isSuccessful()) {
-//                                                // Tắt ProgressDialog và hiển thị thông báo thành công
-//                                                progressDialog.dismiss();
-//                                                Toast.makeText(AddBookActivity.this, "Thêm sách thành công!", Toast.LENGTH_SHORT).show();
-//
-//                                                // Refresh dữ liệu trong BookFragment (nếu có)
-//                                                BookFragment.getInstance().docDulieu();
-//                                                finish();
-//                                            } else {
-//                                                // Tắt ProgressDialog và hiển thị lỗi
-//                                                progressDialog.dismiss();
-//                                                Log.d(TAG, "Lỗi khi thêm tài liệu", task.getException());
-//                                            }
-//                                        }
-//                                    });
-                                }
-                            });
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@androidx.annotation.NonNull Exception e) {
-                            // Tắt ProgressDialog và hiển thị lỗi khi upload thất bại
-                            progressDialog.dismiss();
-                            Toast.makeText(AddBookActivity.this, "Tải ảnh lên thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    // Thông báo lỗi nếu thiếu thông tin hoặc ảnh
-                    Toast.makeText(AddBookActivity.this, "Vui lòng nhập đầy đủ thông tin và chọn ảnh", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
 
+    private void uploadData(String name, String author, String categoryId, String description, String publisherId, String publishYear, String quantity) {
+        if (!name.isEmpty() && !author.isEmpty() && !categoryId.isEmpty() && !description.isEmpty()
+                && !publisherId.isEmpty() && !publishYear.isEmpty() && !quantity.isEmpty() && imageUri != null) {
+            pd.setTitle("Đang thêm sách");
+            pd.show();
+
+            // Định dạng tên tệp ảnh để tránh trùng lặp
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy_MM_dd_HH_mm_ss");
+            Date date = new Date();
+            String fileFormat = simpleDateFormat.format(date);
+
+            // Thiết lập đường dẫn ảnh trên Firebase Storage
+            storageReference = FirebaseStorage.getInstance().getReference("images/" + fileFormat);
+            storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            // Nhận được URL của ảnh sau khi upload thành công
+                            String imageUrl = uri.toString();
+
+                            String id = UUID.randomUUID().toString();
+                            Map<String, Object> doc = new HashMap<>();
+
+                            doc.put("id", id);
+                            doc.put("name", name);
+                            doc.put("author", author);
+                            doc.put("categoryId", selectedCategoryId);
+                            doc.put("description", description);
+                            doc.put("publisherId", selectedPublisherId);
+                            doc.put("publishYear", Integer.parseInt(publishYear));
+                            doc.put("quantity", Integer.parseInt(quantity));
+                            doc.put("image", imageUrl);
+
+                            db.collection("Books").document(id).set(doc)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
+                                            pd.dismiss();
+                                            Toast.makeText(AddBookActivity.this, "Thêm sách thành công!", Toast.LENGTH_SHORT).show();
+                                            BookFragment.getInstance().docDulieu();
+                                            finish();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@androidx.annotation.NonNull Exception e) {
+                                            pd.dismiss();
+                                            Toast.makeText(AddBookActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@androidx.annotation.NonNull Exception e) {
+                    // Tắt ProgressDialog và hiển thị lỗi khi upload thất bại
+                    pd.dismiss();
+                    Toast.makeText(AddBookActivity.this, "Tải ảnh lên thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            // Thông báo lỗi nếu thiếu thông tin hoặc ảnh
+            Toast.makeText(AddBookActivity.this, "Vui lòng nhập đầy đủ thông tin và chọn ảnh", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
@@ -336,5 +354,229 @@ public class AddBookActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
+    private void loadCategories() {
+        // Tải dữ liệu Category từ Firestore và đổ vào Spinner
+        db.collection("Categories").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                categoryNames.clear(); // Xóa dữ liệu cũ trước khi thêm mới
+                categoryMap.clear(); // Xóa bản đồ category
+
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    String categoryId = document.getId();
+                    String categoryName = document.getString("name");
+
+                    categoryNames.add(categoryName);
+                    categoryMap.put(categoryName, categoryId);
+                }
+
+                // Thêm mục "Thêm danh mục mới" vào cuối danh sách
+                categoryNames.add("Thêm danh mục mới");
+
+                ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
+                categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerCategory.setAdapter(categoryAdapter);
+            } else {
+                Toast.makeText(this, "Lỗi khi tải danh mục", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadPublishers() {
+        // Tải dữ liệu Publisher từ Firestore và đổ vào Spinner
+        db.collection("Publishers").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                publisherNames.clear(); // Xóa dữ liệu cũ trước khi thêm mới
+                publisherMap.clear();
+
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    String publisherId = document.getId();
+                    String publisherName = document.getString("name");
+
+                    publisherNames.add(publisherName);
+                    publisherMap.put(publisherName, publisherId);
+                }
+
+                // Thêm mục "Thêm nhà xuất bản mới" vào cuối danh sách
+                publisherNames.add("Thêm nhà xuất bản mới");
+
+                ArrayAdapter<String> publisherAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, publisherNames);
+                publisherAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerPublisher.setAdapter(publisherAdapter);
+            } else {
+                Toast.makeText(this, "Lỗi khi tải nhà xuất bản", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void addNewCategory(String name) {
+        if (!name.isEmpty()) {
+            String id = UUID.randomUUID().toString();
+
+            // Kiểm tra id tồn tại
+            db.collection("Categories").document(id).get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && !task.getResult().exists()) {
+                            // Nếu id chưa tồn tại, thì thêm dữ liệu vào Firestore
+                            Map<String, Object> doc = new HashMap<>();
+                            doc.put("id", id);
+                            doc.put("name", name);
+
+                            db.collection("Categories").document(id).set(doc)
+                                    .addOnCompleteListener(task1 -> {
+                                        Toast.makeText(AddBookActivity.this, "Thêm danh mục thành công!", Toast.LENGTH_SHORT).show();
+                                        loadCategories();
+
+                                        // Thêm danh mục mới vào danh sách và cập nhật Spinner
+                                        categoryNames.add(name); // Thêm danh mục mới vào danh sách
+                                        categoryMap.put(name, id); // Lưu ID của danh mục
+
+                                        spinnerCategory.setSelection(categoryNames.indexOf(name));
+
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(AddBookActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                        } else {
+                            // Nếu ID đã tồn tại, gọi lại hàm uploadData với một ID mới
+                            addNewCategory(name);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(AddBookActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(AddBookActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addNewPublisher(String name, String address, String country) {
+        if (!name.isEmpty() && !address.isEmpty() && !country.isEmpty()) {
+            String id = UUID.randomUUID().toString();
+
+            // Kiểm tra id tồn tại
+            db.collection("Publishers").document(id).get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && !task.getResult().exists()) {
+                            // Nếu id chưa tồn tại, thì thêm dữ liệu vào Firestore
+                            Map<String, Object> doc = new HashMap<>();
+                            doc.put("id", id);
+                            doc.put("name", name);
+                            doc.put("address", address);
+                            doc.put("country", country);
+
+                            db.collection("Publishers").document(id).set(doc)
+                                    .addOnCompleteListener(task1 -> {
+                                        Toast.makeText(AddBookActivity.this, "Thêm nhà xuất bản thành công!", Toast.LENGTH_SHORT).show();
+                                        loadPublishers();
+
+                                        // Thêm nhà xuất bản mới vào danh sách và cập nhật Spinner
+                                        publisherNames.add(name); // Thêm nhà xuất bản mới vào danh sách
+                                        publisherMap.put(name, id); // Lưu ID của nhà xuất bản
+
+                                        spinnerPublisher.setSelection(publisherNames.indexOf(name));
+
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(AddBookActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                        } else {
+                            // Nếu ID đã tồn tại, gọi lại hàm uploadData với một ID mới
+                            addNewPublisher(name, address, country);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(AddBookActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(AddBookActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showAddCategoryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Tạo một TextView để hiển thị tiêu đề
+        TextView titleView = new TextView(this);
+        titleView.setText("Thêm danh mục mới");
+        titleView.setGravity(Gravity.CENTER); // Căn giữa tiêu đề
+        titleView.setTextSize(20); // Đặt kích thước chữ cho tiêu đề
+        titleView.setPadding(16, 20, 16, 16); // Thêm padding cho tiêu đề
+
+        // Tạo một LinearLayout để chứa các EditText
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(32, 32, 32, 32); // Thêm padding cho layout
+
+        // Tạo EditText cho tên nhà xuất bản
+        EditText inputName = new EditText(this);
+        inputName.setHint("Tên danh mục");
+        layout.addView(inputName); // Thêm EditText vào layout
+
+        // Đặt layout và title vào AlertDialog
+        builder.setCustomTitle(titleView);
+        builder.setView(layout);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String newCategoryName = inputName.getText().toString();
+            if (!newCategoryName.isEmpty()) {
+                addNewCategory(newCategoryName); // Gọi hàm thêm danh mục mới
+            } else {
+                Toast.makeText(this, "Vui lòng nhập tên danh mục", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    private void showAddPublisherDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Tạo một TextView để hiển thị tiêu đề
+        TextView titleView = new TextView(this);
+        titleView.setText("Thêm nhà xuất bản mới");
+        titleView.setGravity(Gravity.CENTER); // Căn giữa tiêu đề
+        titleView.setTextSize(20); // Đặt kích thước chữ cho tiêu đề
+        titleView.setPadding(16, 20, 16, 16); // Thêm padding cho tiêu đề
+
+        // Tạo một LinearLayout để chứa các EditText
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(32, 32, 32, 32); // Thêm padding cho layout
+
+        // Tạo EditText cho tên nhà xuất bản
+        EditText inputName = new EditText(this);
+        inputName.setHint("Tên nhà xuất bản");
+        layout.addView(inputName); // Thêm EditText vào layout
+
+        // Tạo EditText cho địa chỉ
+        EditText inputAddress = new EditText(this);
+        inputAddress.setHint("Địa chỉ");
+        layout.addView(inputAddress); // Thêm EditText vào layout
+
+        // Tạo EditText cho quốc gia
+        EditText inputCountry = new EditText(this);
+        inputCountry.setHint("Quốc gia");
+        layout.addView(inputCountry); // Thêm EditText vào layout
+
+        // Đặt layout và title vào AlertDialog
+        builder.setCustomTitle(titleView);
+        builder.setView(layout);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String newPublisherName = inputName.getText().toString();
+            String newPublisherAddress = inputAddress.getText().toString();
+            String newPublisherCountry = inputCountry.getText().toString();
+            if (!newPublisherName.isEmpty() && !newPublisherAddress.isEmpty() && !newPublisherCountry.isEmpty()) {
+                addNewPublisher(newPublisherName, newPublisherAddress, newPublisherCountry); // Gọi hàm thêm danh mục mới
+            } else {
+                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
 
 }

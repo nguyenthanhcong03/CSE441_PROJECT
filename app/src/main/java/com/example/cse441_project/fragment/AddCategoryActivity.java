@@ -53,7 +53,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class AddCategoryActivity extends AppCompatActivity {
-
     private ImageButton btnCloseTab;
     private Button btnSave;
     EditText edtName;
@@ -174,33 +173,40 @@ public class AddCategoryActivity extends AppCompatActivity {
             pd.show();
 
             String id = UUID.randomUUID().toString();
-            Map<String, Object> doc = new HashMap<>();
-            doc.put("id", id);
-            doc.put("name", name);
-            doc.put("search", name.toLowerCase());
 
-            db.collection("Categories").document(id).set(doc)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
-                            pd.dismiss();
-                            Toast.makeText(AddCategoryActivity.this, "Thêm danh mục thành công!", Toast.LENGTH_SHORT).show();
-                            // Refresh dữ liệu trong CategoryFragment (nếu có)
-                            CategoryFragment.getInstance().docDulieu();
-                            finish();
+            // Kiểm tra id tồn tại
+            db.collection("Categories").document(id).get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && !task.getResult().exists()) {
+                            // Nếu id chưa tồn tại, thì thêm dữ liệu vào Firestore
+                            Map<String, Object> doc = new HashMap<>();
+                            doc.put("id", id);
+                            doc.put("name", name);
+                            doc.put("search", name.toLowerCase());
+
+                            db.collection("Categories").document(id).set(doc)
+                                    .addOnCompleteListener(task1 -> {
+                                        pd.dismiss();
+                                        Toast.makeText(AddCategoryActivity.this, "Thêm danh mục thành công!", Toast.LENGTH_SHORT).show();
+                                        CategoryFragment.getInstance().docDulieu(); // Refresh dữ liệu
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        pd.dismiss();
+                                        Toast.makeText(AddCategoryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                        } else {
+                            // Nếu ID đã tồn tại, gọi lại hàm uploadData với một ID mới
+                            uploadData(name);
                         }
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(AddCategoryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    .addOnFailureListener(e -> {
+                        pd.dismiss();
+                        Toast.makeText(AddCategoryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         } else {
             Toast.makeText(AddCategoryActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 }
