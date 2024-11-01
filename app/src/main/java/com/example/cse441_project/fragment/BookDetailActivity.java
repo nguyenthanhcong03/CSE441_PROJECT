@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -69,9 +70,7 @@ public class BookDetailActivity extends AppCompatActivity {
 
             txtName.setText(pName);
             txtAuthor.setText(pAuthor);
-//            txtCategory.setText(pCategory);
             txtDescription.setText(pDescription);
-//            txtPublisher.setText(pPublisher);
             txtPublishYear.setText(pPublishYear);
             txtQuantity.setText(pQuantity);
 
@@ -83,16 +82,27 @@ public class BookDetailActivity extends AppCompatActivity {
 
         }
 
-
-
-
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(BookDetailActivity.this, EditBookActivity.class);
-
-
                 startActivity(intent);
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                BookFragment.getInstance().deleteData(position);
+                new AlertDialog.Builder(BookDetailActivity.this)
+                        .setTitle("Xác nhận xóa")
+                        .setMessage("Bạn có chắc chắn muốn xóa cuốn sách này không?")
+                        .setPositiveButton("Xóa", (dialog, which) -> {
+                            // Thực hiện xóa sách
+                            deleteBook();
+                        })
+                        .setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss())
+                        .show();
             }
         });
 
@@ -139,11 +149,25 @@ public class BookDetailActivity extends AppCompatActivity {
                     int availableCount = totalQuantity - borrowedCount;
 
                     // Hiển thị số sách đang mượn và số sách còn lại
-                    txtBorrowedBooks.setText(borrowedCount+"");
-                    txtAvailableBooks.setText(availableCount+"");
+                    txtBorrowedBooks.setText(borrowedCount + "");
+                    txtAvailableBooks.setText(availableCount + "");
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(BookDetailActivity.this, "Lỗi khi lấy dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
+
+    private void deleteBook() {
+        db.collection("Books").document(pId)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(BookDetailActivity.this, "Đã xóa sách thành công", Toast.LENGTH_SHORT).show();
+                    BookFragment.getInstance().docDulieu();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(BookDetailActivity.this, "Lỗi khi xóa sách: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
 }

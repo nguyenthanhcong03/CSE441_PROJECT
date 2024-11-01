@@ -81,8 +81,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 intent.putExtra("pImage", image);
 
                 listActivity.startActivity(intent);
-
-                //Toast.makeText(listActivity, bookName + "\n" + bookBook + "\n" + bookQuantity, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -120,7 +118,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                             listActivity.startActivity(intent);
                         }
                         if (i == 1) {
-                            BookFragment.getInstance().deleteData(position);
+                            new AlertDialog.Builder(BookFragment.getInstance().getActivity())
+                                    .setTitle("Xác nhận xóa")
+                                    .setMessage("Bạn có chắc chắn muốn xóa cuốn sách này không?")
+                                    .setPositiveButton("Xóa", (dialog, which) -> {
+                                        BookFragment.getInstance().deleteData(position);
+                                    })
+                                    .setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss())
+                                    .show();
                         }
                     }
                 }).create().show();
