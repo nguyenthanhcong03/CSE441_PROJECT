@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".StudentActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".StudentActivity"
+    tools:openDrawer="start">
 
+    <include layout="@layout/activity_student_content" />
 
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#626D71"
+        app:headerLayout="@layout/layout_header_nav"
+        app:itemBackground="@drawable/nav_item_background"
+        app:itemIconPadding="15dp"
+        app:itemIconTint="@color/white"
+        app:itemTextAppearance="@style/CustomNavigationTextAppearance"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/student_menu_nav" />
 
-
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

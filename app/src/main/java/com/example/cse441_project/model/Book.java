@@ -8,6 +8,7 @@ import  lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Book {
 
     private String id;
@@ -18,6 +19,7 @@ public class Book {
     private String image;
     private int quantity;
     private String publisherId;
+    private int publishYear;
 
 
 }

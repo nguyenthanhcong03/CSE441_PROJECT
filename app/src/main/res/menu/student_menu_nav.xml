@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_student_home"
+            android:icon="@drawable/ic_white_home"
+            android:title="Trang chủ" />
+        <item
+            android:id="@+id/nav_view_book"
+            android:icon="@drawable/ic_white_book"
+            android:title="Sách" />
+        <item
+            android:id="@+id/nav_view_category"
+            android:icon="@drawable/ic_white_category"
+            android:title="Danh mục" />
+        <item
+            android:id="@+id/nav_borrow_book"
+            android:icon="@drawable/ic_white_student"
+            android:title="Mượn sách" />
+        <item
+            android:id="@+id/nav_return_book"
+            android:icon="@drawable/ic_white_author"
+            android:title="Trả sách" />
+        <item
+            android:id="@+id/nav_view_rule"
+            android:icon="@drawable/ic_white_publisher"
+            android:title="Quy định" />
+        <item
+            android:id="@+id/nav_student_account"
+            android:icon="@drawable/ic_white_statistic"
+            android:title="Tài khoản" />
+
+    </group>
+</menu>

@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
+//    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -44,27 +46,18 @@ android {
 
 dependencies {
 
-    // https://mvnrepository.com/artifact/at.favre.lib/bcrypt
     implementation("at.favre.lib:bcrypt:0.10.2")
+
 //=======
 //    // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
-////
-////    // Declare the dependency for the Cloud Firestore library
-////    // When using the BoM, you don't specify versions in Firebase library dependencies
-////    implementation("com.google.firebase:firebase-firestore")
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
-    // https://mvnrepository.com/artifact/com.github.bumptech.glide/annotations
-    implementation("com.github.bumptech.glide:annotations:5.0.0-rc01")
-    // https://mvnrepository.com/artifact/com.github.bumptech.glide/glide
-    implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
 
 
-////>>>>>>> main
+
+
 
 
     //Lombok
-
     implementation("org.projectlombok:lombok:1.18.24")
     implementation(libs.legacy.support.v4)
     implementation(libs.lifecycle.livedata.ktx)
@@ -73,10 +66,23 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
     annotationProcessor("org.projectlombok:lombok:1.18.24")
 
     implementation(libs.android.mail)
     implementation(libs.android.activation)
+
+    //    Coong
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("androidx.recyclerview:recyclerview:1.3.2")
+
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation("com.google.firebase:firebase-firestore")
+    //Cong
 
 
 
@@ -89,5 +95,4 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(kotlin("script-runtime"))
-
 }

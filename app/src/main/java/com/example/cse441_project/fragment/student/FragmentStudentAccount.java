@@ -2,10 +2,8 @@ package com.example.cse441_project.fragment.student;
 
 import android.os.Bundle;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,21 +12,22 @@ import android.view.ViewGroup;
 
 import com.example.cse441_project.R;
 
-
-
-
-public class FragmentViewBook extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link FragmentStudentAccount#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class FragmentStudentAccount extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_book, container, false);
+        View view = inflater.inflate(R.layout.fragment_student_account, container, false);
         // viet code o day
 
         return view;
     }
 
     // viet ham o day
-
 
 }
