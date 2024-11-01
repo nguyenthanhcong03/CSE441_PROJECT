@@ -48,12 +48,18 @@ dependencies {
     implementation("at.favre.lib:bcrypt:0.10.2")
 //=======
 //    // Import the BoM for the Firebase platform
-////    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
 ////
 ////    // Declare the dependency for the Cloud Firestore library
 ////    // When using the BoM, you don't specify versions in Firebase library dependencies
 ////    implementation("com.google.firebase:firebase-firestore")
-////    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    // https://mvnrepository.com/artifact/com.github.bumptech.glide/annotations
+    implementation("com.github.bumptech.glide:annotations:5.0.0-rc01")
+    // https://mvnrepository.com/artifact/com.github.bumptech.glide/glide
+    implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
+
+
 ////>>>>>>> main
 
 
