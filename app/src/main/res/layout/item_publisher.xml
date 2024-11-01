@@ -7,13 +7,6 @@
     android:padding="4dp">
 
     <TextView
-        android:id="@+id/tvId"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Mã" />
-
-    <TextView
         android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

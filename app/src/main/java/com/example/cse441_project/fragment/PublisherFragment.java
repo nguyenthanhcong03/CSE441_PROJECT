@@ -38,7 +38,7 @@ public class PublisherFragment extends Fragment {
     private FirebaseFirestore db;
     private Button buttonAddPublisher;
     private EditText searchBar;
-    private ActivityResultLauncher<Intent> editPublisherLauncher;
+    private ActivityResultLauncher<Intent> publisherActivityLauncher;
 
     @Nullable
     @Override
@@ -67,7 +67,7 @@ public class PublisherFragment extends Fragment {
             }
         });
 
-        editPublisherLauncher = registerForActivityResult(
+        publisherActivityLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
@@ -76,13 +76,13 @@ public class PublisherFragment extends Fragment {
                 }
         );
 
-        adapter = new PublisherAdapter(publisherList, editPublisherLauncher);
+        adapter = new PublisherAdapter(publisherList, publisherActivityLauncher);
         recyclerView.setAdapter(adapter);
 
         buttonAddPublisher = view.findViewById(R.id.buttonAddPublisher);
         buttonAddPublisher.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddPublisherActivity.class);
-            editPublisherLauncher.launch(intent);
+            publisherActivityLauncher.launch(intent);
         });
 
         loadPublishers();
@@ -100,7 +100,7 @@ public class PublisherFragment extends Fragment {
     }
 
     public ActivityResultLauncher<Intent> getEditPublisherLauncher() {
-        return editPublisherLauncher;
+        return publisherActivityLauncher;
     }
 
     private void loadPublishers() {

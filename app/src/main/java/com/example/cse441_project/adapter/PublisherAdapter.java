@@ -26,12 +26,12 @@ public class PublisherAdapter extends RecyclerView.Adapter<PublisherAdapter.Publ
 
     private List<Publisher> publishers;
     private List<Publisher> publishersFull;
-    private ActivityResultLauncher<Intent> editLauncher;
+    private ActivityResultLauncher<Intent> publisherActivityLauncher;
 
-    public PublisherAdapter(List<Publisher> publishers, ActivityResultLauncher<Intent> editLauncher) {
+    public PublisherAdapter(List<Publisher> publishers, ActivityResultLauncher<Intent> publisherActivityLauncher) {
         this.publishers = publishers;
         this.publishersFull = new ArrayList<>(publishers);
-        this.editLauncher = editLauncher;
+        this.publisherActivityLauncher = publisherActivityLauncher;
     }
 
     @NonNull
@@ -44,7 +44,6 @@ public class PublisherAdapter extends RecyclerView.Adapter<PublisherAdapter.Publ
     @Override
     public void onBindViewHolder(@NonNull PublisherViewHolder holder, int position) {
         Publisher publisher = publishers.get(position);
-        holder.tvId.setText(publisher.getId());
         holder.tvName.setText(publisher.getName());
         holder.tvAddress.setText(publisher.getAddress());
         holder.tvCountry.setText(publisher.getCountry());
@@ -56,7 +55,7 @@ public class PublisherAdapter extends RecyclerView.Adapter<PublisherAdapter.Publ
             intent.putExtra("PUBLISHER_ADDRESS", publisher.getAddress());
             intent.putExtra("PUBLISHER_COUNTRY", publisher.getCountry());
 
-            editLauncher.launch(intent);
+            publisherActivityLauncher.launch(intent);
         });
 
         holder.btnDelete.setOnClickListener(v -> showConfirmationDialog(v, publisher, position));
@@ -78,7 +77,6 @@ public class PublisherAdapter extends RecyclerView.Adapter<PublisherAdapter.Publ
 
         public PublisherViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvId = itemView.findViewById(R.id.tvId);
             tvName = itemView.findViewById(R.id.tvName);
             tvAddress = itemView.findViewById(R.id.tvAddress);
             tvCountry = itemView.findViewById(R.id.tvCountry);

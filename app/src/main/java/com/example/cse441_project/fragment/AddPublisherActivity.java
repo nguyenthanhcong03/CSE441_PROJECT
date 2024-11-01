@@ -34,7 +34,6 @@ public class AddPublisherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_publisher_add);
 
-        // Khởi tạo các view như cũ
         editTextPublisherName = findViewById(R.id.editTextPublisherName);
         editTextPublisherAddress = findViewById(R.id.editTextPublisherAddress);
         editTextPublisherCountry = findViewById(R.id.editTextPublisherCountry);
@@ -57,35 +56,26 @@ public class AddPublisherActivity extends AppCompatActivity {
             return;
         }
 
-        db.runTransaction(transaction -> {
-            DocumentReference counterRef = db.collection("counters").document("auto_id");
-            DocumentSnapshot snapshot = transaction.get(counterRef);
+        DocumentReference newPublisherRef = db.collection("Publishers").document();
+        String newId = "PUB" + newPublisherRef.getId().substring(0, 5);
 
-            long currentCount = snapshot.exists() ? snapshot.getLong("publishers") : 0;
-            long newCount = currentCount + 1;
+        Publisher publisher = new Publisher();
+        publisher.setId(newId);
+        publisher.setName(name);
+        publisher.setAddress(address);
+        publisher.setCountry(country);
 
-            String newId = String.format("PUB%03d", newCount);
-
-            Publisher publisher = new Publisher();
-            publisher.setId(newId);
-            publisher.setName(name);
-            publisher.setAddress(address);
-            publisher.setCountry(country);
-
-            transaction.set(counterRef, new HashMap<String, Object>() {{
-                put("publishers", newCount);
-            }}, SetOptions.merge());
-
-            transaction.set(db.collection("Publishers").document(newId), publisher);
-
-            return null;
-        }).addOnSuccessListener(aVoid -> {
-            showNotificationDialog("Thêm nhà xuất bản thành công");
-            setResult(Activity.RESULT_OK);
-        }).addOnFailureListener(e -> {
-            showNotificationDialog("Thêm nhà xuất bản thất bại");
-            Log.d("AddPublisherError", "Lưu thất bại: " + e.getMessage());
-        });
+        db.collection("Publishers")
+                .document(newId)
+                .set(publisher)
+                .addOnSuccessListener(aVoid -> {
+                    showNotificationDialog("Thêm nhà xuất bản thành công");
+                    setResult(Activity.RESULT_OK);
+                })
+                .addOnFailureListener(e -> {
+                    showNotificationDialog("Thêm nhà xuất bản thất bại");
+                    Log.d("AddPublisherError", "Lưu thất bại: " + e.getMessage());
+                });
     }
 
     private void showConfirmationDialog() {

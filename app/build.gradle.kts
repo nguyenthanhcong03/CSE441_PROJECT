@@ -41,6 +41,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
 
+    // Declare the dependency for Firebase Storage
+    implementation("com.google.firebase:firebase-storage")
 
     //Lombok
     implementation("org.projectlombok:lombok:1.18.24")

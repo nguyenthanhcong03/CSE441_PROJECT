@@ -1,10 +1,20 @@
 package com.example.cse441_project.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,37 +36,89 @@ public class AuthorFragment extends Fragment {
     private AuthorAdapter authorAdapter;
     private List<Author> authorList;
     private FirebaseFirestore db;
-
+    private Button buttonAddAuthor;
+    private EditText searchBarAuthor;
+    private ActivityResultLauncher<Intent> authorActivityLauncher;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_author, container, false);
 
         recyclerView = view.findViewById(R.id.recycleViewAuthor);
+        buttonAddAuthor = view.findViewById(R.id.buttonAddAuthor);
+        searchBarAuthor = view.findViewById(R.id.searchBarAuthor);
+
+        authorActivityLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        fetchAuthors();
+                    }
+                }
+        );
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        buttonAddAuthor.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AddAuthorActivity.class);
+            authorActivityLauncher.launch(intent);
+        });
+
         authorList = new ArrayList<>();
-        authorAdapter = new AuthorAdapter(authorList);
+        authorAdapter = new AuthorAdapter(authorList, authorActivityLauncher);
         recyclerView.setAdapter(authorAdapter);
 
         db = FirebaseFirestore.getInstance();
         fetchAuthors();
 
+        searchBarAuthor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterAuthors(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         return view;
     }
 
     private void fetchAuthors() {
+        authorList.clear();
+        authorAdapter.notifyDataSetChanged();
+
         db.collection("Authors")
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Author author = document.toObject(Author.class);
-                            authorList.add(author);
-                        }
-                        authorAdapter.notifyDataSetChanged();
-                    } else {
-
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Author author = document.toObject(Author.class);
+                        authorList.add(author);
                     }
+                    authorAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("FetchAuthorsError", "Lỗi tải tác giả: ", e);
                 });
     }
+
+    private void filterAuthors(String text) {
+        List<Author> filteredList = new ArrayList<>();
+
+        for (Author author : authorList) {
+            if (author.getName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(author);
+            }
+        }
+
+        authorAdapter.updateList(filteredList);
+    }
+
 }
