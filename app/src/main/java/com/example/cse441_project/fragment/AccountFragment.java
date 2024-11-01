@@ -1,5 +1,6 @@
 package com.example.cse441_project.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 public class AccountFragment extends Fragment {
     private TextView textViewUsername, textViewFullname, textViewDate, textViewGender, textViewAddress, textViewPhone, textViewEmail;
     ImageView imgAvatarAdmin;
+    ImageButton btnEditAccount;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,7 +41,8 @@ public class AccountFragment extends Fragment {
 
         imgAvatarAdmin = view.findViewById(R.id.imgAvatarAdmin);
 
-        ImageButton btnEditAccount = view.findViewById(R.id.btnEditAccount);
+        btnEditAccount = view.findViewById(R.id.btnEditAccount);
+
         ImageView iconChangPassword = view.findViewById(R.id.iconChangPassword);
         TextView txChangPassword = view.findViewById(R.id.textViewChangePassword);
         ImageView iconRedirectChangPassword = view.findViewById(R.id.iconRedirectChangPassword);
@@ -53,12 +56,18 @@ public class AccountFragment extends Fragment {
         txChangPassword.setOnClickListener(changePasswordListener);
         iconRedirectChangPassword.setOnClickListener(changePasswordListener);
 
-        getUserData(btnEditAccount);
+        getUserData();
 
         return view;
     }
 
-    private void getUserData(ImageButton btnEditAccount) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserData();
+    }
+
+    private void getUserData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Query query = db.collection("Users").whereEqualTo("role", "Admin");
 
@@ -77,6 +86,7 @@ public class AccountFragment extends Fragment {
                         String email = snapshot.getString("email");
                         String avatarUrl = snapshot.getString("avatarUrl");
 
+                        // Cập nhật giao diện
                         textViewUsername.setText(username);
                         textViewFullname.setText(fullname);
                         textViewDate.setText(date);
@@ -100,7 +110,7 @@ public class AccountFragment extends Fragment {
                             intent.putExtra("phone", phone);
                             intent.putExtra("email", email);
                             intent.putExtra("avatarUrl", avatarUrl);
-                            startActivity(intent);
+                            startActivityForResult(intent, 1); // Gọi với REQUEST_CODE
                         });
                     }
                 } else {
@@ -111,4 +121,13 @@ public class AccountFragment extends Fragment {
             Log.e("FirebaseError", e.getMessage());
         });
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            getUserData();
+        }
+    }
+
 }
