@@ -15,7 +15,7 @@ import com.example.cse441_project.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.bumptech.glide.Glide;
+//import com.bumptech.glide.Glide;
 
 public class BookAdapter  {
 //    private List<Book> bookList;
