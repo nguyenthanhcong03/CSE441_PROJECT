@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.CSE441_PROJECT" parent="Base.Theme.CSE441_PROJECT" />
+    <style name="Theme.CSE441_PROJECT.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.CSE441_PROJECT.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.CSE441_PROJECT.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

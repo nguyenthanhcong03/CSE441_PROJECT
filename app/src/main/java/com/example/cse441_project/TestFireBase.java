@@ -38,9 +38,9 @@ public class TestFireBase extends AppCompatActivity {
             String id = edtId.getText().toString();
             String name = edtName.getText().toString();
             HashMap<String, String> book = new HashMap<>();
-            book.put("categoryId", id);
+
             book.put("categoryName", name);
-            firestore.collection("Category").add(book)
+            firestore.collection("Categories").add(book)
                     .addOnSuccessListener(documentReference -> {
                         Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
             }).addOnFailureListener(e -> {

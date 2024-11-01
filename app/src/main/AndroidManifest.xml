@@ -23,9 +23,6 @@
         android:theme="@style/Theme.CSE441_PROJECT"
         tools:targetApi="31">
         <activity
-            android:name=".fragment.CategoryDetailActivity"
-            android:exported="false" />
-        <activity
             android:name=".fragment.EditRuleActivity"
             android:exported="false" />
         <activity
@@ -47,8 +44,40 @@
             android:name=".fragment.AddBookActivity"
             android:exported="false" />
         <activity
-            android:name=".TestFireBase"
+            android:name=".auth.forgotpassword.ChangePassword"
+            android:exported="false" />
+        <activity
+            android:name=".auth.forgotpassword.ForgotPassword"
+            android:exported="false" />
+        <activity
+            android:name=".StudentActivity"
+            android:exported="true"
+            android:label="@string/title_activity_student">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -56,15 +85,6 @@
 
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
