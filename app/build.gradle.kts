@@ -63,10 +63,24 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
     annotationProcessor("org.projectlombok:lombok:1.18.24")
 
     implementation(libs.android.mail)
     implementation(libs.android.activation)
+
+    //    Coong
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("androidx.recyclerview:recyclerview:1.3.2")
+
+    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation("com.google.firebase:firebase-firestore")
+    //Cong
 
 
 
