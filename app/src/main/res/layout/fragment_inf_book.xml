@@ -15,7 +15,7 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
-        android:background="@drawable/background_search"
+        android:background="@drawable/background_search_dat"
         android:orientation="vertical">
 
         <ImageView
