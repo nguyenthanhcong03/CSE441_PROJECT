@@ -13,16 +13,15 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    
     packaging {
         resources {
             excludes.add("META-INF/NOTICE.md")
             excludes.add("META-INF/LICENSE.md")
         }
     }
-
 
     buildTypes {
         release {
@@ -33,49 +32,33 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     buildFeatures {
         viewBinding = true
     }
 }
 
 dependencies {
-
-    // https://mvnrepository.com/artifact/at.favre.lib/bcrypt
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("at.favre.lib:bcrypt:0.10.2")
-    // https://mvnrepository.com/artifact/com.github.bumptech.glide/glide
-    implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
-    // https://mvnrepository.com/artifact/com.github.bumptech.glide/annotations
-    implementation("com.github.bumptech.glide:annotations:5.0.0-rc01")
+    
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
-
-
-    // Declare the dependency for Firebase Storage
-    implementation(platform("com.google.firebase:firebase-bom:32.0.0")) // BOM version
-    implementation("com.google.firebase:firebase-storage")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-appcheck")
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-analytics")
 
-    //Lombok
-
-    implementation("org.projectlombok:lombok:1.18.24")
-    implementation(libs.legacy.support.v4)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.firestore)
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
-
-    implementation(libs.android.mail)
-    implementation(libs.android.activation)
-
-
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -85,15 +68,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation(kotlin("script-runtime"))
-
-}
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+    
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
 }
-
-
-
-
