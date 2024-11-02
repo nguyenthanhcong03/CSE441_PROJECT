@@ -35,8 +35,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class EditAuthorActivity extends AppCompatActivity {
@@ -245,21 +248,21 @@ public class EditAuthorActivity extends AppCompatActivity {
         String birthday = editTextAuthorBirthday.getText().toString().trim();
         String nationality = spinnerNationality.getSelectedItem().toString().trim();
 
-        if (name.isEmpty() || gender == null || imageUri == null) {
+        if (name.isEmpty()) {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
+
         if (name.length() > 255) {
             Toast.makeText(this, "Tên tác giả không được quá 255 ký tự", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (Character.isDigit(name.charAt(0))) {
             Toast.makeText(this, "Tên tác giả không được bắt đầu bằng chữ số", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (!isValidDate(birthday)) {
+        if (birthday.isEmpty() || !isValidDate(birthday)) {
             Toast.makeText(this, "Ngày sinh không hợp lệ", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -285,6 +288,16 @@ public class EditAuthorActivity extends AppCompatActivity {
                 });
     }
 
+    private boolean isValidDate(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        sdf.setLenient(false);
+        try {
+            sdf.parse(date);
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
+    }
 
     private void showNotificationDialog(String message) {
         Dialog dialog = new Dialog(this);
