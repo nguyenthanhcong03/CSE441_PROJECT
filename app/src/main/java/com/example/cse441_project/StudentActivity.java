@@ -114,12 +114,7 @@ public class StudentActivity extends AppCompatActivity {
                         replaceFragment(new FragmentBorrowBook());
                         currentFragment = FRAGMENT_BORROW_BOOK;
                     }
-                } else if (itemId == R.id.nav_return_book) {
-                    if (currentFragment != FRAGMENT_RETURN_BOOK) {
-                        replaceFragment(new FragmentReturnBook());
-                        currentFragment = FRAGMENT_RETURN_BOOK;
-                    }
-                } else if (itemId == R.id.nav_view_rule) {
+                }  else if (itemId == R.id.nav_view_rule) {
                     if (currentFragment != FRAGMENT_VIEW_RULE) {
                         replaceFragment(new FragmentViewRule());
                         currentFragment = FRAGMENT_VIEW_RULE;
