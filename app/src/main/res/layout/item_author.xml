@@ -22,8 +22,8 @@
 
             <ImageView
                 android:id="@+id/img_ql_tacgia_avt"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/icon_avatar" />
@@ -43,7 +43,7 @@
                     android:layout_marginTop="5dp"
                     android:text="Nguyễn Thị Hường"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Giới tính: Nữ"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
@@ -83,7 +83,7 @@
                     android:id="@+id/button_ql_tacgia_sua"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:background="@color/white"
                     android:src="@drawable/icon_edit"/>
 
@@ -91,10 +91,9 @@
                     android:id="@+id/button_ql_tacgia_xoa"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="20dp"
                     android:background="@color/white"
-                    android:src="@drawable/icon_delete"
-                    app:tint="#e91e63" />
+                    android:src="@drawable/icon_delete" />
             </LinearLayout>
 
         </LinearLayout>

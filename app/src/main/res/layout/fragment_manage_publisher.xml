@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="630dp"
+        android:paddingHorizontal="10dp"
         android:orientation="vertical">
 
         <EditText
@@ -19,8 +20,9 @@
             android:padding="10dp"
             android:drawableStart="@drawable/icon_search"
             android:drawablePadding="10dp"
+            android:textSize="14sp"
             android:background="@drawable/background_search"
-            android:layout_margin="16dp"/>
+            android:layout_marginVertical="16dp"/>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -35,16 +37,18 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1"
                     android:text="Tên"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="#333333" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1"
                     android:text="Địa chỉ"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="#333333" />
 
@@ -53,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Quốc gia"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="#333333" />
 
@@ -60,6 +65,7 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:text="Thao tác"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="#333333"
                     android:gravity="center" />
@@ -69,18 +75,17 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPublisher"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="12dp"/>
+            android:layout_marginTop="2dp"
+            android:layout_height="400dp"/>
 
         <Button
             android:id="@+id/buttonAddPublisher"
-            android:layout_width="180dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="200dp"
             android:layout_marginTop="10dp"
             android:backgroundTint="#3D4446"
             android:text="+ Thêm NXB"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

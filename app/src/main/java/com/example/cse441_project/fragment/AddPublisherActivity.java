@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,11 +26,11 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.HashMap;
 
 public class AddPublisherActivity extends AppCompatActivity {
-    private EditText editTextPublisherName, editTextPublisherAddress, editTextPublisherCountry;
+    private EditText editTextPublisherName, editTextPublisherAddress;
     private Button buttonAdd;
     private FirebaseFirestore db;
-    private ImageView buttonBack;
-
+    private ImageView buttonBack, iconPickCountry;
+    private Spinner spinnerCountry;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,20 +38,29 @@ public class AddPublisherActivity extends AppCompatActivity {
 
         editTextPublisherName = findViewById(R.id.editTextPublisherName);
         editTextPublisherAddress = findViewById(R.id.editTextPublisherAddress);
-        editTextPublisherCountry = findViewById(R.id.editTextPublisherCountry);
         buttonAdd = findViewById(R.id.buttonAdd);
         buttonBack = findViewById(R.id.buttonBackAdd);
+
+        spinnerCountry = findViewById(R.id.spinnerCountry);
+        iconPickCountry = findViewById(R.id.iconPickCountry);
 
         db = FirebaseFirestore.getInstance();
 
         buttonAdd.setOnClickListener(v -> showConfirmationDialog());
         buttonBack.setOnClickListener(v -> finish());
+
+        String[] countries = {"Việt Nam", "Mỹ", "Nhật Bản", "Trung Quốc", "Hàn Quốc", "Anh", "Pháp", "Đức", "Ấn Độ", "Úc"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, countries);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCountry.setAdapter(adapter);
+
+        iconPickCountry.setOnClickListener(v -> spinnerCountry.performClick());
     }
 
     private void savePublisher() {
         String name = editTextPublisherName.getText().toString().trim();
         String address = editTextPublisherAddress.getText().toString().trim();
-        String country = editTextPublisherCountry.getText().toString().trim();
+        String country = spinnerCountry.getSelectedItem().toString();
 
         if (name.isEmpty() || address.isEmpty() || country.isEmpty()) {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();

@@ -42,7 +42,7 @@ public class AddAuthorActivity extends AppCompatActivity {
     private EditText editTextAuthorName, editTextAuthorBirthday;
     private RadioGroup radioGroupGender;
     private Button buttonAdd;
-    private ImageView buttonBack, iconAvatarAuthor, iconPickImage;
+    private ImageView buttonBack, iconAvatarAuthor, iconPickImage, iconPickDate, iconPickNationality;
     private Uri imageUri;
     private FirebaseFirestore db;
     private FirebaseStorage storage;
@@ -58,8 +58,11 @@ public class AddAuthorActivity extends AppCompatActivity {
         editTextAuthorBirthday = findViewById(R.id.editTextAuthorBirthday);
         buttonAdd = findViewById(R.id.buttonAdd);
         buttonBack = findViewById(R.id.buttonBackAdd);
+
         iconAvatarAuthor = findViewById(R.id.iconAvatarAuthor);
         iconPickImage = findViewById(R.id.iconPickImage);
+        iconPickDate  = findViewById(R.id.iconPickDate);
+        iconPickNationality = findViewById(R.id.iconPickNationality);
 
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -78,6 +81,9 @@ public class AddAuthorActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, countries);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerNationality.setAdapter(adapter);
+
+        iconPickDate.setOnClickListener(v -> showDatePickerDialog());
+        iconPickNationality.setOnClickListener(v -> spinnerNationality.performClick());
     }
 
     private void showDatePickerDialog() {

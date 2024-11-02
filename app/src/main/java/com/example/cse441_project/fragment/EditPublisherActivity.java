@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
@@ -16,12 +18,12 @@ import com.example.cse441_project.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class EditPublisherActivity extends AppCompatActivity {
-    private EditText editTextId, editTextName, editTextAddress, editTextCountry;
+    private EditText editTextId, editTextName, editTextAddress;
     private String publisherId;
     private FirebaseFirestore db;
     private Button buttonSave;
-    private ImageView buttonBack;
-
+    private ImageView buttonBack, iconPickCountry;
+    private Spinner spinnerCountry;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,29 +32,44 @@ public class EditPublisherActivity extends AppCompatActivity {
         editTextId = findViewById(R.id.editTextPublisherId);
         editTextName = findViewById(R.id.editTextPublisherName);
         editTextAddress = findViewById(R.id.editTextPublisherAddress);
-        editTextCountry = findViewById(R.id.editTextPublisherCountry);
         buttonSave = findViewById(R.id.buttonSave);
         buttonBack = findViewById(R.id.buttonBackEdit);
+
+        iconPickCountry = findViewById(R.id.iconPickCountry);
+        spinnerCountry = findViewById(R.id.spinnerCountry);
+
+        String[] countries = {"Việt Nam", "Mỹ", "Nhật Bản", "Trung Quốc", "Hàn Quốc", "Anh", "Pháp", "Đức", "Ấn Độ", "Úc"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, countries);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCountry.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
 
         if (getIntent() != null) {
             publisherId = getIntent().getStringExtra("PUBLISHER_ID");
+            String publisherName = getIntent().getStringExtra("PUBLISHER_NAME");
+            String publisherAddress = getIntent().getStringExtra("PUBLISHER_ADDRESS");
+            String publisherCountry = getIntent().getStringExtra("PUBLISHER_COUNTRY");
 
-            editTextId.setText(getIntent().getStringExtra("PUBLISHER_ID"));
-            editTextName.setText(getIntent().getStringExtra("PUBLISHER_NAME"));
-            editTextAddress.setText(getIntent().getStringExtra("PUBLISHER_ADDRESS"));
-            editTextCountry.setText(getIntent().getStringExtra("PUBLISHER_COUNTRY"));
+            editTextId.setText(publisherId);
+            editTextName.setText(publisherName);
+            editTextAddress.setText(publisherAddress);
+            if (publisherCountry != null) {
+                int spinnerPosition = adapter.getPosition(publisherCountry);
+                spinnerCountry.setSelection(spinnerPosition);
+            }
         }
 
         buttonSave.setOnClickListener(v -> showConfirmationDialog());
         buttonBack.setOnClickListener(v -> finish());
+
+        iconPickCountry.setOnClickListener(v -> spinnerCountry.performClick());
     }
 
     private void updatePublisher() {
         String name = editTextName.getText().toString().trim();
         String address = editTextAddress.getText().toString().trim();
-        String country = editTextCountry.getText().toString().trim();
+        String country = spinnerCountry.getSelectedItem().toString().trim();
 
         if (name.isEmpty() || address.isEmpty() || country.isEmpty()) {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();

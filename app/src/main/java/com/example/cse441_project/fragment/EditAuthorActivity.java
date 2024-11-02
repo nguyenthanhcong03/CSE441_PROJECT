@@ -47,7 +47,7 @@ public class EditAuthorActivity extends AppCompatActivity {
     private RadioGroup radioGroupGender;
     private RadioButton radioMale, radioFemale;
     private Button buttonSave;
-    private ImageView iconAvatarAuthor, buttonBack, iconPickImage, iconOpenCamera;
+    private ImageView iconAvatarAuthor, buttonBack, iconPickImage, iconOpenCamera, iconPickDate, iconPickNationality;
 
     private FirebaseFirestore db;
     private String authorId, avatarUrl;
@@ -69,6 +69,8 @@ public class EditAuthorActivity extends AppCompatActivity {
 
         iconPickImage = findViewById(R.id.iconPickImageAuthor);
         iconOpenCamera = findViewById(R.id.iconOpenCameraAuthor);
+        iconPickDate  = findViewById(R.id.iconPickDate);
+        iconPickNationality = findViewById(R.id.iconPickNationality);
 
         radioMale = findViewById(R.id.radioMale);
         radioFemale = findViewById(R.id.radioFemale);
@@ -111,9 +113,9 @@ public class EditAuthorActivity extends AppCompatActivity {
 
         iconPickImage.setOnClickListener(v -> openImagePicker());
         iconOpenCamera.setOnClickListener(v -> checkCameraPermission());
-        editTextAuthorBirthday.setOnClickListener(v -> {
-            showDatePickerDialog();
-        });
+        editTextAuthorBirthday.setOnClickListener(v -> showDatePickerDialog());
+        iconPickDate.setOnClickListener(v -> showDatePickerDialog());
+        iconPickNationality.setOnClickListener(v -> spinnerNationality.performClick());
     }
 
     private void showDatePickerDialog() {
