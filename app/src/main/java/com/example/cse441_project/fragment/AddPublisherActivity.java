@@ -60,10 +60,24 @@ public class AddPublisherActivity extends AppCompatActivity {
     private void savePublisher() {
         String name = editTextPublisherName.getText().toString().trim();
         String address = editTextPublisherAddress.getText().toString().trim();
-        String country = spinnerCountry.getSelectedItem().toString();
+        String country = spinnerCountry.getSelectedItem().toString().trim();
 
         if (name.isEmpty() || address.isEmpty() || country.isEmpty()) {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (name.length() > 255) {
+            Toast.makeText(this, "Tên nhà xuất bản không được quá 255 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (Character.isDigit(name.charAt(0))) {
+            Toast.makeText(this, "Tên nhà xuất bản không được bắt đầu bằng chữ số", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (address.length() > 500) {
+            Toast.makeText(this, "Địa chỉ không được quá 500 ký tự", Toast.LENGTH_SHORT).show();
             return;
         }
 

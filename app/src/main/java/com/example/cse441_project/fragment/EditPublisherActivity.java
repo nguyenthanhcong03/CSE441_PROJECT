@@ -76,6 +76,20 @@ public class EditPublisherActivity extends AppCompatActivity {
             return;
         }
 
+        if (name.length() > 255) {
+            Toast.makeText(this, "Tên nhà xuất bản không được quá 255 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (Character.isDigit(name.charAt(0))) {
+            Toast.makeText(this, "Tên nhà xuất bản không được bắt đầu bằng chữ số", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (address.length() > 500) {
+            Toast.makeText(this, "Địa chỉ không được quá 500 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         db.collection("Publishers").document(publisherId).update(
                 "name", name,
                 "address", address,
