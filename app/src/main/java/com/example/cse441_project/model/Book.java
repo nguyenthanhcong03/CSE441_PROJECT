@@ -1,6 +1,7 @@
 package com.example.cse441_project.model;
 import android.icu.text.UFormat;
 
+import java.io.Serializable;
 import java.util.List;
 
 import  lombok.*;
@@ -9,7 +10,7 @@ import  lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Book {
+public class Book implements Serializable {
 
     private String id;
     private String name;
@@ -20,6 +21,8 @@ public class Book {
     private int quantity;
     private String publisherId;
     private int publishYear;
+
+    //Sách giúp mọi người khám phá các tạo ra một ứng dụng Android
 
 
 }

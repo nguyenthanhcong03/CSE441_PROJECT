@@ -16,13 +16,14 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#626D71"
-        app:headerLayout="@layout/layout_header_nav"
-        app:itemBackground="@drawable/nav_item_background"
+        android:background="@color/white"
+        app:headerLayout="@layout/student_header_nav"
+        app:itemBackground="@color/white"
         app:itemIconPadding="15dp"
-        app:itemIconTint="@color/white"
+        app:itemIconTint="#303030"
         app:itemTextAppearance="@style/CustomNavigationTextAppearance"
-        app:itemTextColor="@color/white"
+        app:itemTextColor="#303030"
+
         app:menu="@menu/student_menu_nav" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

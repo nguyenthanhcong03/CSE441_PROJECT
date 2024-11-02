@@ -313,6 +313,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user.put(Constants.KEY_GENDER, "");
                 user.put(Constants.KEY_BIRTHDAY, "");
                 user.put(Constants.KEY_CURRENT_KEY, "");
+                user.put(Constants.KEY_STATUS, "");
                 // Đăng dữ liệu với Firestore
                 firestore.collection("Users")
                         .add(user)

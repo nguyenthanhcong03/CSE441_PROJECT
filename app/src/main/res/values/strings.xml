@@ -3,7 +3,7 @@
     <string name="nav_home">Trang chủ</string>
     <string name="nav_manage_book">Quản lý sách</string>
     <string name="nav_manage_category">Quản lý danh mục</string>
-    <string name="nav_manage_student">Quản lý sinh viên</string>
+    <string name="nav_manage_borrow_book">Quản lý mượn sách</string>
     <string name="nav_manage_author">Quản lý tác giả</string>
     <string name="nav_manage_publisher">Quản lý nhà xuất bản</string>
     <string name="nav_statistic">Thống kê</string>
@@ -31,4 +31,6 @@
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_category">Chọn danh mục</string>
+
 </resources>

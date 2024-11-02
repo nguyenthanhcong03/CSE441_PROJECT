@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StudentViewBookDetail">
+
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/book_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+
+        >
+        <!--        android:background="@drawable/border_background"-->
+        <ImageView
+            android:id="@+id/book_cover"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/img_default"
+            android:scaleType="centerCrop"  />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="2"
+            android:layout_marginStart="8dp"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/book_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đắc nhân tâm"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/book_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tác giả: Dale Carnegie"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/book_publisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NXB: Simon and Schuster"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/sectionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Giới thiệu"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/book_info"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/book_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:text="Giới thiệu Sách “Đắc nhân tâm” – Bài học gợi mở về nghệ thuật giao tiếp, thu phục lòng người.\n\nCon người sinh ra vốn là một cá thể khác nhau, mỗi chúng ta đều sở hữu cá tính, suy nghĩ, trái tim riêng biệt. Tuy nhiên, dù luôn tồn tại sự khác biệt giữa mỗi cá nhân nhưng nếu chúng ta không mai giữa đúng cách sẽ rất khó để giữ cho hành động của mình đúng chuẩn mực và đảm bảo hành vi của mình mang lại kết quả tốt đẹp, hay chí ít là không ảnh hưởng đến những mối quan hệ xung quanh."
+        android:textColor="#000"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sectionTitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
