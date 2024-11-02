@@ -7,10 +7,11 @@ import lombok.*;
 @AllArgsConstructor
 public class BorrowedBook {
     private String id;
-    private String userId;
+    private String studentId;
     private String bookId;
     private String borrowDate;
     private String returnDate;
+    private String studentName;
     private String status;
-    private String expectedReturnDate;
+
 }

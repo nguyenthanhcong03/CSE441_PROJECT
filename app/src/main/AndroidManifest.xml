@@ -34,8 +34,12 @@
         <activity
             android:name=".fragment.ChangePasswordActivity"
             android:exported="false" /> <!-- Đã sửa thẻ đóng -->
+
         <activity
-            android:name=".fragment.ThemHangLoatActivity"
+            android:name=".StudentViewBookDetail"
+            android:exported="false" />
+        <activity
+            android:name=".fragment.AddBookLoan"
             android:exported="false" />
         <activity
             android:name=".fragment.EditRuleActivity"
@@ -64,16 +68,23 @@
         <activity
             android:name=".fragment.EditAdminProfileActivity"
             android:exported="false" />
-        <activity
-            android:name=".TestFireBase"
-            android:exported="false" />
+
         <activity
             android:name=".auth.forgotpassword.ForgotPassword"
             android:exported="false" />
         <activity
             android:name=".StudentActivity"
             android:exported="true"
-            android:label="@string/title_activity_student" />
+            android:label="@string/title_activity_student">
+<!--             <intent-filter>-->
+<!--             <action android:name="android.intent.action.MAIN" />-->
+
+
+<!--             <category android:name="android.intent.category.LAUNCHER" />-->
+<!--             </intent-filter>-->
+
+        </activity>
+
         <activity
             android:name=".AdminActivity"
             android:exported="false" />
@@ -83,14 +94,25 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false">
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
+
     </application>
 </manifest>

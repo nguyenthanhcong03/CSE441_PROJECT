@@ -25,4 +25,8 @@
         app:itemTextColor="@color/black"
         app:menu="@menu/student_menu_nav" />
 
+
+
+
+
 </androidx.drawerlayout.widget.DrawerLayout>

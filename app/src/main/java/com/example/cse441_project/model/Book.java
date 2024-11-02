@@ -1,12 +1,21 @@
 package com.example.cse441_project.model;
 
+
+import java.io.Serializable;
+import java.util.List;
+
 import lombok.*;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
+
+
+public class Book implements Serializable {
+
+
 
     private String id;
     private String name;
@@ -17,4 +26,10 @@ public class Book {
     private int quantity;
     private String publisherId;
     private int publishYear;
+
+
+
+
+
 }
+
