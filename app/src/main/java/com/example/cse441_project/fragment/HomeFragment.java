@@ -9,6 +9,7 @@ import static com.example.cse441_project.MainActivity.FRAGMENT_STATISTIC;
 import static com.example.cse441_project.MainActivity.FRAGMENT_STUDENT;
 
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -100,7 +101,8 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 if (getActivity() instanceof MainActivity) {
                     if (((MainActivity) getActivity()).currentFragment != FRAGMENT_AUTHOR) {
-                        ((MainActivity) getActivity()).toolbarTitle.setText("Quản lý tác giả");
+                        ((MainActivity) getActivity()).toolbarTitle.setText("Thông tin tác giả");
+                        ((MainActivity) getActivity()).toolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                         replaceFragment(new AuthorFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_AUTHOR;
                         ((MainActivity) getActivity()).itemId = R.id.nav_manage_author; // Lưu ID item được chọn
@@ -116,7 +118,8 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 if (getActivity() instanceof MainActivity) {
                     if (((MainActivity) getActivity()).currentFragment != FRAGMENT_PUBLISHER) {
-                        ((MainActivity) getActivity()).toolbarTitle.setText("Quản lý nhà xuất bản");
+                        ((MainActivity) getActivity()).toolbarTitle.setText("Thông tin nhà xuất bản");
+                        ((MainActivity) getActivity()).toolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                         replaceFragment(new PublisherFragment());
                         ((MainActivity) getActivity()).currentFragment = FRAGMENT_PUBLISHER;
                         ((MainActivity) getActivity()).itemId = R.id.nav_manage_publisher; // Lưu ID item được chọn
