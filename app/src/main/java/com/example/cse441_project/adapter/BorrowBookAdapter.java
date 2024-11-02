@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cse441_project.R;
+import com.example.cse441_project.model.Book;
 import com.example.cse441_project.model.BorrowedBook;
 
 import java.util.List;
@@ -53,6 +54,12 @@ public class BorrowBookAdapter extends RecyclerView.Adapter<BorrowBookAdapter.Vi
             textViewStudentName = itemView.findViewById(R.id.textViewStudentName);
             textViewBookId = itemView.findViewById(R.id.textViewBookId);
         }
+    }
+
+    public void updateDocument(List<BorrowedBook> filteredBooks) {
+        this.borrowedBooksList.clear();
+        this.borrowedBooksList.addAll(filteredBooks);
+        notifyDataSetChanged();
     }
 }
 
