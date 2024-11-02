@@ -197,7 +197,7 @@
 
             <ImageView
                 android:paddingStart="10dp"
-                android:id="@+id/iconChangPassword"
+                android:id="@+id/iconChangePassword"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 app:srcCompat="@drawable/ic_change_pass" />

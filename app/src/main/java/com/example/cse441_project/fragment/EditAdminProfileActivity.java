@@ -59,7 +59,8 @@ public class EditAdminProfileActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private Spinner spinnerAddress;
     private ArrayAdapter<String> addressAdapter;
-
+    ImageButton btnClose;
+    Button btnSave;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +71,13 @@ public class EditAdminProfileActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("avatars");
 
+        // Khởi tạo các thành phần UUI
         initializeViews();
+
+        // Setup các sự kiện
         setButtonListeners();
 
+        // Nhận dữ liệu từ intent
         Intent intent = getIntent();
         if (intent != null) {
             editTextAdminId.setText(intent.getStringExtra("userId"));
@@ -84,10 +89,7 @@ public class EditAdminProfileActivity extends AppCompatActivity {
             editTextEmail.setText(intent.getStringExtra("email"));
             avatarUrl = intent.getStringExtra("avatarUrl");
 
-            if (avatarUrl != null) {
-                updateAvatarImage(avatarUrl);
-            }
-
+            if (avatarUrl != null) { updateAvatarImage(avatarUrl); }
             String gender = intent.getStringExtra("gender");
             if (gender != null) {
                 switch (gender) {
@@ -123,27 +125,13 @@ public class EditAdminProfileActivity extends AppCompatActivity {
         radioGroupGender = findViewById(R.id.radioGroupGender);
 
         spinnerAddress = findViewById(R.id.spinnerAddress);
-        String[] addressOptions = {
-                "Hà Nội",
-                "TP Hồ Chí Minh",
-                "Nghệ An",
-                "Đà Nẵng",
-                "Hải Phòng",
-                "Cần Thơ",
-                "Nha Trang",
-                "Huế",
-                "Đồng Nai",
-                "Bình Dương",
-                "Long An",
-                "Thừa Thiên-Huế",
-                "Kiên Giang",
-                "Quảng Ninh",
-                "Lâm Đồng",
-                "Bắc Ninh"
-        };
+        String[] addressOptions = {"Hà Nội", "TP Hồ Chí Minh", "Nghệ An", "Đà Nẵng", "Hải Phòng", "Cần Thơ", "Nha Trang", "Huế", "Đồng Nai", "Bình Dương", "Long An", "Thừa Thiên-Huế", "Kiên Giang", "Quảng Ninh", "Lâm Đồng", "Bắc Ninh"};
         addressAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, addressOptions);
         addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAddress.setAdapter(addressAdapter);
+
+        btnClose = findViewById(R.id.btnClose);
+        btnSave = findViewById(R.id.buttonSave);
 
         iconAvatarAdmin = findViewById(R.id.iconAvatarAdminProfile);
         iconPickImage = findViewById(R.id.iconPickImage);
@@ -159,10 +147,7 @@ public class EditAdminProfileActivity extends AppCompatActivity {
     }
 
     private void setButtonListeners() {
-        ImageButton btnClose = findViewById(R.id.btnClose);
         btnClose.setOnClickListener(view -> finish());
-
-        Button btnSave = findViewById(R.id.buttonSave);
         btnSave.setOnClickListener(v -> showConfirmationDialog());
 
         iconPickImage.setOnClickListener(v -> openImagePicker());

@@ -44,10 +44,14 @@ public class AuthorFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_author, container, false);
 
+        // Khai báo các view, recycle view và khởi tạo firebase
         recyclerView = view.findViewById(R.id.recycleViewAuthor);
         buttonAddAuthor = view.findViewById(R.id.buttonAddAuthor);
         searchBarAuthor = view.findViewById(R.id.searchBarAuthor);
 
+        db = FirebaseFirestore.getInstance();
+
+        // Đăng ký load lại dữ liệu authors
         authorActivityLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -57,19 +61,18 @@ public class AuthorFragment extends Fragment {
                 }
         );
 
+        // Đổ dữ liệu vào recycle view
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        authorList = new ArrayList<>();
+        authorAdapter = new AuthorAdapter(authorList, authorActivityLauncher);
+        recyclerView.setAdapter(authorAdapter);
+        fetchAuthors();
+
+        // Setup các sự kiện
         buttonAddAuthor.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddAuthorActivity.class);
             authorActivityLauncher.launch(intent);
         });
-
-        authorList = new ArrayList<>();
-        authorAdapter = new AuthorAdapter(authorList, authorActivityLauncher);
-        recyclerView.setAdapter(authorAdapter);
-
-        db = FirebaseFirestore.getInstance();
-        fetchAuthors();
-
         searchBarAuthor.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -90,9 +93,9 @@ public class AuthorFragment extends Fragment {
         return view;
     }
 
+    // Hàm load lại dữ liệu authors
     private void fetchAuthors() {
         authorList.clear();
-        authorAdapter.notifyDataSetChanged();
 
         db.collection("Authors")
                 .get()
@@ -109,15 +112,14 @@ public class AuthorFragment extends Fragment {
                 });
     }
 
+    // Hàm lọc authors
     private void filterAuthors(String text) {
         List<Author> filteredList = new ArrayList<>();
-
         for (Author author : authorList) {
             if (author.getName().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(author);
             }
         }
-
         authorAdapter.updateList(filteredList);
     }
 
