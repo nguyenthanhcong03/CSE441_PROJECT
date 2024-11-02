@@ -33,8 +33,7 @@ import java.util.List;
 public class PublisherFragment extends Fragment {
     private RecyclerView recyclerView;
     private PublisherAdapter adapter;
-    private List<Publisher> publisherList;
-    private List<Publisher> fullPublisherList;
+    private List<Publisher> publisherList, fullPublisherList;
     private FirebaseFirestore db;
     private Button buttonAddPublisher;
     private EditText searchBar;
@@ -45,15 +44,37 @@ public class PublisherFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_publisher, container, false);
 
-        db = FirebaseFirestore.getInstance();
-
-        recyclerView = view.findViewById(R.id.recyclerViewPublisher);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         publisherList = new ArrayList<>();
         fullPublisherList = new ArrayList<>();
 
+        // Khởi tạo firebase và các thành phần UI
+        db = FirebaseFirestore.getInstance();
+
+        recyclerView = view.findViewById(R.id.recyclerViewPublisher);
         searchBar = view.findViewById(R.id.searchBar);
+        buttonAddPublisher = view.findViewById(R.id.buttonAddPublisher);
+
+        // Đăng ký sự kiện load lại dữ liệu publisher
+        publisherActivityLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        loadPublishers();
+                    }
+                }
+        );
+
+        // Đổ dữ liệu vào recycle view
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new PublisherAdapter(publisherList, publisherActivityLauncher);
+        recyclerView.setAdapter(adapter);
+        loadPublishers();
+
+        // Setup các sự kiện
+        buttonAddPublisher.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AddPublisherActivity.class);
+            publisherActivityLauncher.launch(intent);
+        });
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -67,25 +88,6 @@ public class PublisherFragment extends Fragment {
             }
         });
 
-        publisherActivityLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        loadPublishers();
-                    }
-                }
-        );
-
-        adapter = new PublisherAdapter(publisherList, publisherActivityLauncher);
-        recyclerView.setAdapter(adapter);
-
-        buttonAddPublisher = view.findViewById(R.id.buttonAddPublisher);
-        buttonAddPublisher.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), AddPublisherActivity.class);
-            publisherActivityLauncher.launch(intent);
-        });
-
-        loadPublishers();
         return view;
     }
 

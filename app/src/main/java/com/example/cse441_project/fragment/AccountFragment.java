@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +38,7 @@ public class AccountFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_account, container, false);
 
+        // Khởi tạo các thành phần UI
         textViewUsername = view.findViewById(R.id.textViewUsername);
         textViewFullname = view.findViewById(R.id.textViewFulllname);
         textViewDate = view.findViewById(R.id.textViewDate);
@@ -51,19 +51,16 @@ public class AccountFragment extends Fragment {
         btnEditAccount = view.findViewById(R.id.btnEditAccount);
         btnLogout = view.findViewById(R.id.btnLogout);
 
-        ImageView iconChangPassword = view.findViewById(R.id.iconChangPassword);
+
+        ImageView iconChangePassword = view.findViewById(R.id.iconChangePassword);
         TextView txChangPassword = view.findViewById(R.id.textViewChangePassword);
         ImageView iconRedirectChangPassword = view.findViewById(R.id.iconRedirectChangPassword);
 
-        View.OnClickListener changePasswordListener = v -> {
-            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
-            startActivity(intent);
-        };
 
-        iconChangPassword.setOnClickListener(changePasswordListener);
-        txChangPassword.setOnClickListener(changePasswordListener);
-        iconRedirectChangPassword.setOnClickListener(changePasswordListener);
-
+        // Setup sự kiện
+        iconChangePassword.setOnClickListener(v -> changePasswordListener());
+        txChangPassword.setOnClickListener(v -> changePasswordListener());
+        iconRedirectChangPassword.setOnClickListener(v -> changePasswordListener());
         btnLogout.setOnClickListener(v -> showConfirmationDialog());
 
         getUserData();
@@ -71,6 +68,13 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
+    // Hàm chuyển sang activity đổi mật khẩu
+    private void changePasswordListener() {
+        Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+        startActivity(intent);
+    }
+
+    // Hàm hiển thị dialog xác nhận đăng xuất
     private void showConfirmationDialog() {
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.quanly_dialog_confirmation);
@@ -94,6 +98,7 @@ public class AccountFragment extends Fragment {
         dialog.show();
     }
 
+    // Hàm thực hiện đăng xuất
     private void logoutUser() {
         PreferenceManager preferenceManager = new PreferenceManager(getActivity());
         preferenceManager.remove(Constants.KEY_USER_ID);
@@ -103,6 +108,7 @@ public class AccountFragment extends Fragment {
         startActivity(intent);
     }
 
+    // Lấy dữ liệu admin
     private void getUserData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Query query = db.collection("Users").whereEqualTo("role", "Admin");
@@ -122,7 +128,6 @@ public class AccountFragment extends Fragment {
                         String email = snapshot.getString("email");
                         String avatarUrl = snapshot.getString("avatarUrl");
 
-                        // Cập nhật giao diện
                         textViewUsername.setText(username);
                         textViewFullname.setText(fullname);
                         textViewDate.setText(date);
@@ -158,12 +163,14 @@ public class AccountFragment extends Fragment {
         });
     }
 
+    // Cập nhật dữ liệu admin khi quay lại fragment
     @Override
     public void onResume() {
         super.onResume();
         getUserData();
     }
 
+    //   Nhận kết quả từ activity khác và cập nhật dữ liệu admin
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
