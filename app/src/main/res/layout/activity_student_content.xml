@@ -11,14 +11,14 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary">
+        android:background="@color/white">
 
         <ImageButton
             android:id="@+id/btnDrawerToggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_white_menu" />
+            android:src="@drawable/sv_ic_menu" />
 
         <TextView
             android:id="@+id/toolbar_title"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/app_name"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <ImageButton
@@ -36,7 +36,7 @@
             android:layout_gravity="end"
             android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_white_user" />
+            android:src="@drawable/sv_ic_account" />
     </Toolbar>
 
     <!--        Frame Content    -->

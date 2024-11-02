@@ -4,11 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -22,6 +18,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSE441_PROJECT"
         tools:targetApi="31">
+
+        <activity
+            android:name=".fragment.EditAuthorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragment.AddAuthorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragment.EditPublisherActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragment.AddPublisherActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragment.ChangePasswordActivity"
+            android:exported="false" /> <!-- Đã sửa thẻ đóng -->
+
         <activity
             android:name=".StudentViewBookDetail"
             android:exported="false" />
@@ -53,6 +66,10 @@
             android:name=".auth.forgotpassword.ChangePassword"
             android:exported="false" />
         <activity
+            android:name=".fragment.EditAdminProfileActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".auth.forgotpassword.ForgotPassword"
             android:exported="false" />
         <activity
@@ -67,6 +84,7 @@
 <!--             </intent-filter>-->
 
         </activity>
+
         <activity
             android:name=".AdminActivity"
             android:exported="false" />
@@ -76,6 +94,7 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
+
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -92,7 +111,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-    </application>
 
+        </activity>
+
+    </application>
 </manifest>

@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
-//    id("com.google.gms.google-services")
-
 }
 
 android {
@@ -15,16 +13,15 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     packaging {
         resources {
             excludes.add("META-INF/NOTICE.md")
             excludes.add("META-INF/LICENSE.md")
         }
     }
-
 
     buildTypes {
         release {
@@ -35,46 +32,56 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     buildFeatures {
         viewBinding = true
     }
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 dependencies {
 
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("at.favre.lib:bcrypt:0.10.2")
 
-//=======
-//    // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-analytics")
 
 
-
-
-
-
-    //Lombok
     implementation("org.projectlombok:lombok:1.18.24")
-    implementation(libs.legacy.support.v4)
+    annotationProcessor("org.projectlombok:lombok:1.18.24")
+
+    implementation("javax.mail:javax.mail-api:1.6.2")
+
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
+
 
     implementation(libs.android.mail)
     implementation(libs.android.activation)
 
     //    Coong
-    implementation ("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation ("androidx.recyclerview:recyclerview:1.3.2")
@@ -85,7 +92,6 @@ dependencies {
     //Cong
 
 
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -94,5 +100,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation(kotlin("script-runtime"))
 }

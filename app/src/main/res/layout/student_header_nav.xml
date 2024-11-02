@@ -2,10 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:background="@drawable/background"
-    android:gravity="bottom"
-    android:orientation="horizontal"
-    android:padding="20dp">
+
+    android:background="@drawable/background">
+
 
 
     <ImageView
@@ -24,9 +23,12 @@
         android:layout_height="wrap_content"
         android:gravity="start"
         android:padding="12dp"
+
         android:layout_gravity="center_vertical"
         android:text="@string/app_name"
         android:textColor="#303030"
-        android:textSize="26sp"
-        android:textStyle="bold" />
+        android:textSize="26sp"/>
+
+
+
 </LinearLayout>
