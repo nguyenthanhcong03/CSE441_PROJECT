@@ -251,11 +251,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/primary"
                     android:text="Lưu" />
-                <Button
-                    android:id="@+id/selectCSVButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="selectCSVButton" />
+
             </LinearLayout>
 
         </LinearLayout>
