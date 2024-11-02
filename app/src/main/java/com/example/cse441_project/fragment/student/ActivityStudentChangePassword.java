@@ -1,6 +1,9 @@
 package com.example.cse441_project.fragment.student;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +15,9 @@ import com.example.cse441_project.R;
 
 public class ActivityStudentChangePassword extends AppCompatActivity {
 
+    Button buttonSubmit;
+    ImageButton btnClose;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,5 +28,16 @@ public class ActivityStudentChangePassword extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        buttonSubmit = findViewById(R.id.buttonSubmit);
+        btnClose = findViewById(R.id.btnClose);
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
 }
