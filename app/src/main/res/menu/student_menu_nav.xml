@@ -3,31 +3,31 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_student_home"
-            android:icon="@drawable/ic_white_home"
+            android:icon="@drawable/sv_ic_home"
             android:title="Trang chủ" />
         <item
             android:id="@+id/nav_view_book"
-            android:icon="@drawable/ic_white_book"
+            android:icon="@drawable/sv_ic_book"
             android:title="Sách" />
         <item
             android:id="@+id/nav_view_category"
-            android:icon="@drawable/ic_white_category"
+            android:icon="@drawable/sv_ic_category"
             android:title="Danh mục" />
         <item
             android:id="@+id/nav_borrow_book"
-            android:icon="@drawable/ic_white_student"
+            android:icon="@drawable/sv_ic_borrow_book"
             android:title="Mượn sách" />
         <item
             android:id="@+id/nav_return_book"
-            android:icon="@drawable/ic_white_author"
+            android:icon="@drawable/sv_ic_return_book"
             android:title="Trả sách" />
         <item
             android:id="@+id/nav_view_rule"
-            android:icon="@drawable/ic_white_publisher"
+            android:icon="@drawable/sv_ic_rule"
             android:title="Quy định" />
         <item
             android:id="@+id/nav_student_account"
-            android:icon="@drawable/ic_white_statistic"
+            android:icon="@drawable/sv_ic_account"
             android:title="Tài khoản" />
 
     </group>
