@@ -1,21 +1,28 @@
 package com.example.cse441_project.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.cse441_project.LoginActivity;
 import com.example.cse441_project.R;
+import com.example.cse441_project.auth.Constants;
+import com.example.cse441_project.auth.PreferenceManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -26,6 +33,7 @@ public class AccountFragment extends Fragment {
     private TextView textViewUsername, textViewFullname, textViewDate, textViewGender, textViewAddress, textViewPhone, textViewEmail;
     ImageView imgAvatarAdmin;
     ImageButton btnEditAccount;
+    Button btnLogout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,8 +48,8 @@ public class AccountFragment extends Fragment {
         textViewEmail = view.findViewById(R.id.textViewEmail);
 
         imgAvatarAdmin = view.findViewById(R.id.imgAvatarAdmin);
-
         btnEditAccount = view.findViewById(R.id.btnEditAccount);
+        btnLogout = view.findViewById(R.id.btnLogout);
 
         ImageView iconChangPassword = view.findViewById(R.id.iconChangPassword);
         TextView txChangPassword = view.findViewById(R.id.textViewChangePassword);
@@ -56,15 +64,43 @@ public class AccountFragment extends Fragment {
         txChangPassword.setOnClickListener(changePasswordListener);
         iconRedirectChangPassword.setOnClickListener(changePasswordListener);
 
+        btnLogout.setOnClickListener(v -> showConfirmationDialog());
+
         getUserData();
 
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getUserData();
+    private void showConfirmationDialog() {
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.quanly_dialog_confirmation);
+        dialog.setCancelable(true);
+
+        TextView confirmTitle = dialog.findViewById(R.id.confirmTitle);
+        TextView confirmMessage = dialog.findViewById(R.id.confirmMessage);
+        Button btnConfirmYes = dialog.findViewById(R.id.btnConfirmYes);
+        Button btnConfirmNo = dialog.findViewById(R.id.btnConfirmNo);
+
+        confirmTitle.setText("Thông báo");
+        confirmMessage.setText("Bạn có muốn đăng xuất không ?");
+
+        btnConfirmYes.setOnClickListener(v -> {
+            dialog.dismiss();
+            logoutUser();
+        });
+
+        btnConfirmNo.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }
+
+    private void logoutUser() {
+        PreferenceManager preferenceManager = new PreferenceManager(getActivity());
+        preferenceManager.remove(Constants.KEY_USER_ID);
+
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void getUserData() {
@@ -120,6 +156,12 @@ public class AccountFragment extends Fragment {
         }).addOnFailureListener(e -> {
             Log.e("FirebaseError", e.getMessage());
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserData();
     }
 
     @Override

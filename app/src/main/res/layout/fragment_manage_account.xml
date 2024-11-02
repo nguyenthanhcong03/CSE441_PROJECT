@@ -225,8 +225,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="32dp"
             android:background="#787171"
-
-
             android:text="Đăng xuất"
             android:textColor="@color/white"
             app:backgroundTint="@null" />
