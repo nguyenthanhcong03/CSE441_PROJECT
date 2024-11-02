@@ -161,7 +161,7 @@ public class StudentActivity extends AppCompatActivity {
             if (currentFragment != FRAGMENT_STUDENT_HOME) {
                 // Trở về HomeFragment
                 toolbarTitle.setText("AZ-Library");
-                replaceFragment(new HomeFragment());
+                replaceFragment(new FragmentStudentHome());
                 currentFragment = FRAGMENT_STUDENT_HOME; // Cập nhật fragment hiện tại
                 // Đặt trạng thái checked cho item mặc định
                 navigationView.setCheckedItem(R.id.nav_student_home);
