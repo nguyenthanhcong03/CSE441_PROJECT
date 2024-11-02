@@ -35,7 +35,10 @@ import android.Manifest;
 import android.content.Context;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -262,30 +265,75 @@ public class EditAdminProfileActivity extends AppCompatActivity {
             gender = "";
         }
 
-        if (username.isEmpty() || fullname.isEmpty() || date.isEmpty() || address.isEmpty() ||
-                phone.isEmpty() || email.isEmpty() || gender.isEmpty()) {
+        if (adminId.isEmpty() || username.isEmpty() || fullname.isEmpty() || date.isEmpty() ||
+                address.isEmpty() || phone.isEmpty() || email.isEmpty() || gender.isEmpty()) {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-        } else {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            if (avatarUrl != null && avatarUrl.startsWith("http")) {
-                updateProfileInFirestore(adminId, username, fullname, date, address, phone, email, gender, avatarUrl);
-            } else {
-                Uri fileUri = Uri.parse(avatarUrl);
-                StorageReference fileReference = storageReference.child(adminId + ".jpg"); // Use a unique file name
-
-                fileReference.putFile(fileUri).addOnSuccessListener(taskSnapshot -> {
-                    fileReference.getDownloadUrl().addOnSuccessListener(downloadUri -> {
-                        String downloadUrl = downloadUri.toString();
-                        updateProfileInFirestore(adminId, username, fullname, date, address, phone, email, gender, downloadUrl);
-                    }).addOnFailureListener(e -> {
-                        Toast.makeText(this, "Lấy URL ảnh thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(this, "Tải ảnh lên thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-            }
+            return;
         }
+
+        if (username.length() > 255) {
+            Toast.makeText(this, "Tên người dùng không được quá 255 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (Character.isDigit(username.charAt(0))) {
+            Toast.makeText(this, "Tên người dùng không được bắt đầu bằng chữ số", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (fullname.length() > 255) {
+            Toast.makeText(this, "Họ và tên không được quá 255 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (Character.isDigit(fullname.charAt(0))) {
+            Toast.makeText(this, "Họ và tên không được bắt đầu bằng chữ số", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Email không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!phone.matches("\\d{10,11}")) {
+            Toast.makeText(this, "Số điện thoại phải là số và có độ dài từ 10-11 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!isValidDate(date)) {
+            Toast.makeText(this, "Ngày sinh không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        if (avatarUrl != null && avatarUrl.startsWith("http")) {
+            updateProfileInFirestore(adminId, username, fullname, date, address, phone, email, gender, avatarUrl);
+        } else {
+            Uri fileUri = Uri.parse(avatarUrl);
+            StorageReference fileReference = storageReference.child(adminId + ".jpg");
+
+            fileReference.putFile(fileUri).addOnSuccessListener(taskSnapshot -> {
+                fileReference.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                    String downloadUrl = downloadUri.toString();
+                    updateProfileInFirestore(adminId, username, fullname, date, address, phone, email, gender, downloadUrl);
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(this, "Lấy URL ảnh thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }).addOnFailureListener(e -> {
+                Toast.makeText(this, "Tải ảnh lên thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+        }
+    }
+
+    private boolean isValidDate(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        sdf.setLenient(false);
+        try {
+            sdf.parse(date);
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
     }
 
     private void updateProfileInFirestore(String adminId, String username, String fullname, String date, String address, String phone, String email, String gender, String avatarUrl) {
