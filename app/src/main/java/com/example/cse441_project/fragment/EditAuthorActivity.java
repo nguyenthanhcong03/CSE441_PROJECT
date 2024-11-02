@@ -245,8 +245,22 @@ public class EditAuthorActivity extends AppCompatActivity {
         String birthday = editTextAuthorBirthday.getText().toString().trim();
         String nationality = spinnerNationality.getSelectedItem().toString().trim();
 
-        if (name.isEmpty() || birthday.isEmpty() || nationality.isEmpty()) {
+        if (name.isEmpty() || gender == null || imageUri == null) {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (name.length() > 255) {
+            Toast.makeText(this, "Tên tác giả không được quá 255 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (Character.isDigit(name.charAt(0))) {
+            Toast.makeText(this, "Tên tác giả không được bắt đầu bằng chữ số", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!isValidDate(birthday)) {
+            Toast.makeText(this, "Ngày sinh không hợp lệ", Toast.LENGTH_SHORT).show();
             return;
         }
 

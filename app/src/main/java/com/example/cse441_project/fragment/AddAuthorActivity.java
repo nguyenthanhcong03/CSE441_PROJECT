@@ -34,7 +34,10 @@ import com.google.firebase.storage.UploadTask;
 import android.app.DatePickerDialog;
 import android.widget.DatePicker;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class AddAuthorActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -111,6 +114,20 @@ public class AddAuthorActivity extends AppCompatActivity {
             return;
         }
 
+        if (name.length() > 255) {
+            Toast.makeText(this, "Tên tác giả không được quá 255 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (Character.isDigit(name.charAt(0))) {
+            Toast.makeText(this, "Tên tác giả không được bắt đầu bằng chữ số", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!isValidDate(birthday)) {
+            Toast.makeText(this, "Ngày sinh không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String authorId = db.collection("Authors").document().getId();
 
         StorageReference fileReference = storage.getReference("avatars").child(System.currentTimeMillis() + ".jpg");
@@ -138,6 +155,16 @@ public class AddAuthorActivity extends AppCompatActivity {
         });
     }
 
+    private boolean isValidDate(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        sdf.setLenient(false);
+        try {
+            sdf.parse(date);
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
+    }
 
     private String getSelectedGender() {
         int selectedId = radioGroupGender.getCheckedRadioButtonId();
