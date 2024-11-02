@@ -50,6 +50,7 @@ java {
 }
 
 dependencies {
+
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("at.favre.lib:bcrypt:0.10.2")
 
@@ -61,6 +62,7 @@ dependencies {
     implementation("com.google.firebase:firebase-storage")
     implementation("com.google.firebase:firebase-analytics")
 
+
     implementation("org.projectlombok:lombok:1.18.24")
     annotationProcessor("org.projectlombok:lombok:1.18.24")
 
@@ -70,6 +72,25 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+
+
+    implementation(libs.android.mail)
+    implementation(libs.android.activation)
+
+    //    Coong
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("androidx.recyclerview:recyclerview:1.3.2")
+
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation("com.google.firebase:firebase-firestore")
+    //Cong
+
 
     implementation(libs.appcompat)
     implementation(libs.material)

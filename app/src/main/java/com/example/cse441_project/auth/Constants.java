@@ -15,6 +15,7 @@ public class Constants {
     public static final String KEY_PHONE = "phone";
     public static final String KEY_GENDER = "gender";
     public static final String KEY_BIRTHDAY = "birthday";
+    public static final String KEY_STATUS = "status";
     public static final String KEY_PREFERENCE_NAME = "userVersePreference";
     public static final String KEY_IS_SIGNED_IN = "signIn";
 }

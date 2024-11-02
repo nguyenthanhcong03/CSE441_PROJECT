@@ -1,11 +1,6 @@
 package com.example.cse441_project;
 
-import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,13 +8,9 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -28,7 +19,7 @@ import com.example.cse441_project.fragment.AccountFragment;
 import com.example.cse441_project.fragment.HomeFragment;
 import com.example.cse441_project.fragment.BookFragment;
 import com.example.cse441_project.fragment.CategoryFragment;
-import com.example.cse441_project.fragment.StudentFragment;
+import com.example.cse441_project.fragment.BorrowBookFragment;
 import com.example.cse441_project.fragment.AuthorFragment;
 import com.example.cse441_project.fragment.PublisherFragment;
 import com.example.cse441_project.fragment.StatisticFragment;
@@ -41,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_BOOK = 1;
     public static final int FRAGMENT_CATEGORY = 2;
-    public static final int FRAGMENT_STUDENT = 3;
+    public static final int FRAGMENT_BORROW_BOOK = 3;
     public static final int FRAGMENT_AUTHOR = 4;
     public static final int FRAGMENT_PUBLISHER = 5;
     public static final int FRAGMENT_STATISTIC = 6;
@@ -124,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(new CategoryFragment());
                         currentFragment = FRAGMENT_CATEGORY;
                     }
-                } else if (itemId == R.id.nav_manage_student) {
-                    if (currentFragment != FRAGMENT_STUDENT) {
-                        toolbarTitle.setText("Quản lý sinh viên");
-                        replaceFragment(new StudentFragment());
-                        currentFragment = FRAGMENT_STUDENT;
+                } else if (itemId == R.id.nav_manage_borrow_book) {
+                    if (currentFragment != FRAGMENT_BORROW_BOOK) {
+                        toolbarTitle.setText("Quản lý mượn sách");
+                        replaceFragment(new BorrowBookFragment());
+                        currentFragment = FRAGMENT_BORROW_BOOK;
                     }
                 } else if (itemId == R.id.nav_manage_author) {
                     if (currentFragment != FRAGMENT_AUTHOR) {

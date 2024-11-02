@@ -14,9 +14,9 @@
             android:icon="@drawable/ic_white_category"
             android:title="@string/nav_manage_category" />
         <item
-            android:id="@+id/nav_manage_student"
+            android:id="@+id/nav_manage_borrow_book"
             android:icon="@drawable/ic_white_student"
-            android:title="@string/nav_manage_student" />
+            android:title="@string/nav_manage_borrow_book" />
         <item
             android:id="@+id/nav_manage_author"
             android:icon="@drawable/ic_white_author"
