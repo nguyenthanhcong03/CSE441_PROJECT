@@ -82,6 +82,13 @@ public class EditRuleActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btnCloseTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void updateData(String id, String name, String content) {

@@ -21,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class BookDetailActivity extends AppCompatActivity {
     TextView txtName, txtAuthor, txtDescription, txtCategory, txtQuantity, txtPublisher, txtPublishYear, txtBorrowedBooks, txtAvailableBooks;
-    ImageButton btnDelete, btnEdit;
+    ImageButton btnDelete, btnEdit, btnCloseTab;
     ImageView imageViewBook;
 
     String pId, pName, pCategory, pAuthor, pDescription, pPublisher, pPublishYear, pQuantity, pImage;
@@ -52,6 +52,7 @@ public class BookDetailActivity extends AppCompatActivity {
 
         btnEdit = findViewById(R.id.btnEdit);
         btnDelete = findViewById(R.id.btnDelete);
+        btnCloseTab = findViewById(R.id.btnCloseTab);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -103,6 +104,13 @@ public class BookDetailActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss())
                         .show();
+            }
+        });
+
+        btnCloseTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

@@ -59,6 +59,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import lombok.NonNull;
@@ -277,7 +278,8 @@ public class AddBookActivity extends AppCompatActivity {
                             // Nhận được URL của ảnh sau khi upload thành công
                             String imageUrl = uri.toString();
 
-                            String id = UUID.randomUUID().toString();
+//                            String id = UUID.randomUUID().toString();
+                            String id = generateId();
                             Map<String, Object> doc = new HashMap<>();
 
                             doc.put("id", id);
@@ -491,6 +493,17 @@ public class AddBookActivity extends AppCompatActivity {
         } else {
             Toast.makeText(AddBookActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String generateId() {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder id = new StringBuilder(5);
+        Random random = new Random();
+        for (int i = 0; i < 5; i++) {
+            int index = random.nextInt(characters.length());
+            id.append(characters.charAt(index));
+        }
+        return id.toString();
     }
 
     private void showAddCategoryDialog() {
