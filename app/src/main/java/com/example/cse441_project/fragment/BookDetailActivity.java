@@ -66,8 +66,6 @@ public class BookDetailActivity extends AppCompatActivity {
             pQuantity = bundle.getString("pQuantity");
             pImage = bundle.getString("pImage");
 
-            fetchBorrowedAndAvailableBooks(pId, Integer.parseInt(pQuantity));
-
 
             txtName.setText(pName);
             txtAuthor.setText(pAuthor);
@@ -80,6 +78,7 @@ public class BookDetailActivity extends AppCompatActivity {
 
             fetchCategoryName(pCategory);
             fetchPublisherName(pPublisher);
+            fetchQuantity(pId, Integer.parseInt(pQuantity));
 
         }
 
@@ -145,10 +144,10 @@ public class BookDetailActivity extends AppCompatActivity {
                 });
     }
 
-    private void fetchBorrowedAndAvailableBooks(String bookId, int totalQuantity) {
+    private void fetchQuantity(String bookId, int totalQuantity) {
         db.collection("BorrowedBooks")
                 .whereEqualTo("bookId", bookId)
-                .whereEqualTo("status", "")
+                .whereEqualTo("status", "1")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     int borrowedCount = queryDocumentSnapshots.size();  // Số sách đang mượn
