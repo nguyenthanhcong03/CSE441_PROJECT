@@ -9,23 +9,12 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.cse441_project.fragment.AccountFragment;
-import com.example.cse441_project.fragment.AuthorFragment;
-import com.example.cse441_project.fragment.BookFragment;
-import com.example.cse441_project.fragment.CategoryFragment;
 import com.example.cse441_project.fragment.HomeFragment;
-import com.example.cse441_project.fragment.PublisherFragment;
-import com.example.cse441_project.fragment.RuleFragment;
-import com.example.cse441_project.fragment.StatisticFragment;
-import com.example.cse441_project.fragment.StudentFragment;
 import com.example.cse441_project.fragment.student.FragmentBorrowBook;
 import com.example.cse441_project.fragment.student.FragmentReturnBook;
 import com.example.cse441_project.fragment.student.FragmentStudentAccount;
@@ -125,12 +114,7 @@ public class StudentActivity extends AppCompatActivity {
                         replaceFragment(new FragmentBorrowBook());
                         currentFragment = FRAGMENT_BORROW_BOOK;
                     }
-                } else if (itemId == R.id.nav_return_book) {
-                    if (currentFragment != FRAGMENT_RETURN_BOOK) {
-                        replaceFragment(new FragmentReturnBook());
-                        currentFragment = FRAGMENT_RETURN_BOOK;
-                    }
-                } else if (itemId == R.id.nav_view_rule) {
+                }  else if (itemId == R.id.nav_view_rule) {
                     if (currentFragment != FRAGMENT_VIEW_RULE) {
                         replaceFragment(new FragmentViewRule());
                         currentFragment = FRAGMENT_VIEW_RULE;

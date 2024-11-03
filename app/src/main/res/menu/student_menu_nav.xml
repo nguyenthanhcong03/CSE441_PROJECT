@@ -16,11 +16,8 @@
         <item
             android:id="@+id/nav_borrow_book"
             android:icon="@drawable/sv_ic_borrow_book"
-            android:title="Mượn sách" />
-        <item
-            android:id="@+id/nav_return_book"
-            android:icon="@drawable/sv_ic_return_book"
-            android:title="Trả sách" />
+            android:title="Sách mượn" />
+
         <item
             android:id="@+id/nav_view_rule"
             android:icon="@drawable/sv_ic_rule"

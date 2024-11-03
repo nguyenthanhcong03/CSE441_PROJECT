@@ -33,7 +33,7 @@ public class FragmentStudentHome extends Fragment {
         Button btnViewBook = view.findViewById(R.id.btnViewBook);
         Button btnViewCategory = view.findViewById(R.id.btnViewCategory);
         Button btnBorrowBook = view.findViewById(R.id.btnBorrowBook);
-        Button btnReturnBook = view.findViewById(R.id.btnReturnBook);
+
         Button btnViewRule = view.findViewById(R.id.btnViewRule);
         Button btnStudentAccount = view.findViewById(R.id.btnStudentAccount);
 
@@ -83,20 +83,7 @@ public class FragmentStudentHome extends Fragment {
             }
         });
 
-        btnReturnBook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getActivity() instanceof StudentActivity) {
-                    if (((StudentActivity) getActivity()).currentFragment != FRAGMENT_RETURN_BOOK) {
-                        replaceFragment(new FragmentReturnBook());
-                        ((StudentActivity) getActivity()).currentFragment = FRAGMENT_RETURN_BOOK;
-                        ((StudentActivity) getActivity()).itemId = R.id.nav_return_book; // Lưu ID item được chọn
-                        ((StudentActivity) getActivity()).navigationView.getMenu().findItem(((StudentActivity) getActivity()).itemId).setChecked(true);
 
-                    }
-                }
-            }
-        });
 
         btnViewRule.setOnClickListener(new View.OnClickListener() {
             @Override
